@@ -115,7 +115,7 @@ function applyLang(lang) {
     const txt = I18N[lang]?.[key];
     if (txt != null) el.innerHTML = txt; // innerHTML 支持 <br>/<a>
   });
-  buildTOC(); // 语言切换后，重建 TOC 保持标题一致
+  buildTOC(); // 语言切换后重建 TOC
 }
 
 (() => {
@@ -166,8 +166,8 @@ buildTOC();
 })();
 
 /* ============ Data loaders (JSON) ============ */
-/* —— 统一 cache busting，解决数据更新不生效 —— */
-const V = '20250814v7'; // 与 index.html 中 ?v= 同步；改一次强制全站更新
+/* 统一 cache busting，解决数据更新不生效 */
+const V = '20250814v7'; // 与 index.html ?v= 同步即可
 const withV = (url) => url + (url.includes('?') ? '&' : '?') + 'v=' + V;
 
 async function loadJSON(path) {
@@ -176,56 +176,14 @@ async function loadJSON(path) {
   return res.json();
 }
 
-/* 通用小工具：把 DOI/Code 等拼成链接（按需） */
-const linkBadges = (o) =>
-  [
-    o.pdf && `<a href="${o.pdf}" target="_blank" rel="noopener">PDF</a>`,
-    o.project && `<a href="${o.project}" target="_blank" rel="noopener">Project</a>`,
-    o.code && `<a href="${o.code}" target="_blank" rel="noopener">Code</a>`,
-    o.doi && `<a href="https://doi.org/${o.doi}" target="_blank" rel="noopener">DOI</a>`
-  ]
-    .filter(Boolean)
-    .join(' | ');
-
-/* ============ News ============ */
-/* 支持 news.json 的 "icon" 字段；不写则按文本自动推断 */
-function newsIcon(nameOrObj = '') {
-  const icon = (nameOrObj.icon || '').toString().toLowerCase();
-  const text = (nameOrObj.text || nameOrObj || '').toString().toLowerCase();
-
-  const chosen =
-    icon ||
-    (/(oral|presentation|poster)/.test(text) && 'microphone') ||
-    (/(accept|accepted|paper|publication|isprs|tgrs|inf\.? fusion|j\.)/.test(text) && 'file-text') ||
-    (/(award|grant|highly cited|best|excellent)/.test(text) && 'award') ||
-    (/(defense|thesis|master|ph\.?d|graduation)/.test(text) && 'graduation-cap') ||
-    'file-text';
-
-  const SVG = {
-    'microphone':
-      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-         <path d="M12 1a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-         <path d="M19 10a7 7 0 0 1-14 0"/>
-         <path d="M12 19v4"/><path d="M8 23h8"/>
-       </svg>`,
-    'file-text':
-      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-         <path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/>
-       </svg>`,
-    'award':
-      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-         <circle cx="12" cy="8" r="6"/><path d="M15.5 14 12 22l-3.5-8"/>
-       </svg>`,
-    'graduation-cap':
-      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-         <path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5a4 4 0 0 0 8 0v-5"/>
-       </svg>`
-  };
-
-  return SVG[chosen];
+/* 小工具：转义文本，避免把文本当 HTML */
+function esc(s = '') {
+  return String(s).replace(/[&<>"]/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+  ));
 }
 
+/* ============ News（不插入任何自动图标） ============ */
 (async () => {
   const box = document.getElementById('newsList');
   if (!box) return;
@@ -233,9 +191,7 @@ function newsIcon(nameOrObj = '') {
     const data = await loadJSON('data/news.json');
     box.innerHTML = data
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .map((n) =>
-        `<li>${newsIcon(n)} <span class="date">${n.date}</span> <span class="news-text">${n.text}</span></li>`
-      )
+      .map((n) => `<li><span class="date">${esc(n.date)}</span> ${esc(n.text)}</li>`)
       .join('');
   } catch (e) {
     console.warn('news.json not found or invalid', e);
@@ -282,21 +238,28 @@ function newsIcon(nameOrObj = '') {
       const link = titleLink(p);
       const titleHTML = link
         ? `<a href="${link}" target="_blank" rel="noopener">${p.title}</a>`
-        : p.title;
+        : esc(p.title);
 
       return `
         <article class="pub-item">
           <div class="thumb">
-            ${p.thumb ? `<img src="${p.thumb}" alt="${p.title}">`
+            ${p.thumb ? `<img src="${p.thumb}" alt="${esc(p.title)}">`
                       : `<img src="assets/img/placeholder.svg" alt="no thumbnail">`}
           </div>
           <div class="content">
-            <span class="badge">${badge || ''}</span>
+            <span class="badge">${esc(badge || '')}</span>
             <h3>${titleHTML}</h3>
             <p class="authors">${authors}</p>
-            ${kw.length ? `<div class="kw">${kw.map(k=>`<span class="tag">${k}</span>`).join('')}</div>` : ''}
-            ${ (p.pdf || p.code || p.project || p.doi) ? `<p class="links">${linkBadges(p)}</p>` : '' }
-            ${ p.introduction ? `<p class="muted small">${p.introduction}</p>` : '' }
+            ${kw.length ? `<div class="kw">${kw.map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div>` : ''}
+            ${ (p.pdf || p.code || p.project || p.doi) ? `<p class="links">${
+                [
+                  p.pdf && `<a href="${p.pdf}" target="_blank" rel="noopener">PDF</a>`,
+                  p.project && `<a href="${p.project}" target="_blank" rel="noopener">Project</a>`,
+                  p.code && `<a href="${p.code}" target="_blank" rel="noopener">Code</a>`,
+                  p.doi && `<a href="https://doi.org/${p.doi}" target="_blank" rel="noopener">DOI</a>`
+                ].filter(Boolean).join(' | ')
+            }</p>` : '' }
+            ${ p.introduction ? `<p class="muted small">${esc(p.introduction)}</p>` : '' }
           </div>
         </article>
       `;
@@ -314,9 +277,9 @@ function newsIcon(nameOrObj = '') {
     const projs = await loadJSON('data/projects.json');
     grid.innerHTML = projs.map((p) => `
       <article class="card">
-        ${p.thumb ? `<img src="${p.thumb}" alt="${p.name}">` : ''}
-        <h3><a href="${p.link}" target="_blank" rel="noopener">${p.name}</a></h3>
-        <p>${p.desc || ''}</p>
+        ${p.thumb ? `<img src="${p.thumb}" alt="${esc(p.name)}">` : ''}
+        <h3><a href="${p.link}" target="_blank" rel="noopener">${esc(p.name)}</a></h3>
+        <p>${esc(p.desc || '')}</p>
       </article>
     `).join('');
   } catch (e) {
@@ -332,10 +295,10 @@ function newsIcon(nameOrObj = '') {
     const data = await loadJSON('data/datasets.json');
     box.innerHTML = data.map((d) => `
       <article class="card">
-        ${d.thumb ? `<img src="${d.thumb}" alt="${d.name}">` : ''}
-        <h3>${d.name}</h3>
-        <p class="meta">${d.year || ''} ${d.venue ? '· ' + d.venue : ''}</p>
-        <p>${d.desc || ''}</p>
+        ${d.thumb ? `<img src="${d.thumb}" alt="${esc(d.name)}">` : ''}
+        <h3>${esc(d.name)}</h3>
+        <p class="meta">${esc(d.year || '')} ${d.venue ? '· ' + esc(d.venue) : ''}</p>
+        <p>${esc(d.desc || '')}</p>
         <p class="links">
           ${[
             d.home && `<a href="${d.home}" target="_blank" rel="noopener">Home</a>`,
@@ -357,14 +320,14 @@ function newsIcon(nameOrObj = '') {
   if (!box) return;
   try {
     const items = await loadJSON('data/service.json');
-    // 支持两种写法：
+    // 两种写法都支持：
     // 1) [{ "text": "Assistant Editor: ..." }, { "text": "Reviewer: ..." }]
     // 2) [{ "text": "Reviewer:", "items": ["Inf. Fusion", "..."] }]
     box.innerHTML = items.map((s) => {
       if (Array.isArray(s.items) && s.items.length) {
-        return `<li>${s.text || ''}<ul>${s.items.map(x=>`<li>${x}</li>`).join('')}</ul></li>`;
+        return `<li>${esc(s.text || '')}<ul>${s.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></li>`;
       }
-      return `<li>${s.text || s}</li>`; // 不再手写 "•"，避免双点
+      return `<li>${esc(s.text || s)}</li>`; // 不再手写 "•"，避免双点
     }).join('');
   } catch (e) {
     console.warn('service.json not found or invalid', e);
