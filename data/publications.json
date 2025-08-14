@@ -10,6 +10,5 @@
   "pdf": "assets/papers/xxx.pdf", // 可选；不提供就不显示
   "code": "https://github.com/…", // 可选
   "project": "https://project.page/…", // 可选
-  "introduction": "Cloud-contaminated optical satellite image reconstruction is crucial, but challenges from imaging gaps, speckle noise, and underused PolSAR polarization remain. This study proposes PolNet-CR and introduces the LuojiaSET-PolCR dataset, achieving superior cloud removal and high-fidelity imagery for seamless observation.
-"
+  "introduction": "Cloud-contaminated optical satellite image reconstruction is crucial, but challenges from imaging gaps, speckle noise, and underused PolSAR polarization remain. This study proposes PolNet-CR and introduces the LuojiaSET-PolCR dataset, achieving superior cloud removal and high-fidelity imagery for seamless observation."
 }
