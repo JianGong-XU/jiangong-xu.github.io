@@ -196,51 +196,72 @@ const badgeLinks = (o) =>
   }
 })();
 
-// ---- Publications (Selected + All) ----
+// Publications (TP-style, no "Selected", title is a hyperlink, show keywords)
 (async () => {
-  const sel = document.getElementById('selGrid');
-  const all = document.getElementById('pubList');
-  if (!sel && !all) return;
+  const list = document.getElementById('pubList');
+  if (!list) return;
+
+  const YOU = 'Jiangong Xu'; // 你自己的名字（用于加粗）
+
+  // 把作者字符串里出现的你的名字加粗（忽略大小写，尽量稳妥）
+  function highlightAuthor(authorsStr) {
+    if (!authorsStr) return '';
+    const re = new RegExp('\\b' + YOU.replace(/\s+/g, '\\s+') + '\\b', 'i');
+    return authorsStr.replace(re, (m) => `<b>${m}</b>`);
+  }
+
+  // 生成右下角链接
+  const badgeLinks = (o) => [
+    // 不强制提供 PDF；前端只在存在时渲染
+    o.pdf && `<a href="${o.pdf}" target="_blank" rel="noopener">PDF</a>`,
+    o.project && `<a href="${o.project}" target="_blank" rel="noopener">Project</a>`,
+    o.code && `<a href="${o.code}" target="_blank" rel="noopener">Code</a>`,
+    o.doi && `<a href="https://doi.org/${o.doi}" target="_blank" rel="noopener">DOI</a>`
+  ].filter(Boolean).join(' | ');
+
+  // 链接优先级：url > doi > 无链接
+  function titleLink(p) {
+    if (p.url) return p.url;
+    if (p.doi) return `https://doi.org/${p.doi}`;
+    return null;
+  }
+
   try {
     const pubs = await loadJSON('data/publications.json');
 
-    if (sel) {
-      const selected = pubs.filter((p) => p.selected);
-      sel.innerHTML = selected
-        .map(
-          (p) => `
-        <article class="card">
-          ${p.thumb ? `<img src="${p.thumb}" alt="${p.title}">` : ''}
-          <h3>${p.title}</h3>
-          <p class="meta">${p.authors} · <em>${p.venue || ''}</em> ${p.year || ''}</p>
-          ${p.abs ? `<p>${p.abs}</p>` : ''}
-          <p class="links">${badgeLinks(p)}</p>
-        </article>`
-        )
-        .join('');
-    }
+    // 按时间降序（year 可为数字或"YYYY-MM-DD"）
+    const toKey = (y) => {
+      if (typeof y === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(y)) return y;
+      if (typeof y === 'number') return `${y}-12-31`;
+      return '0000-01-01';
+    };
+    pubs.sort((a, b) => toKey(b.year).localeCompare(toKey(a.year)));
 
-    if (all) {
-      const byYear = {};
-      pubs.forEach((p) => ((byYear[p.year] ||= []).push(p)));
-      const years = Object.keys(byYear).sort((a, b) => b - a);
-      all.innerHTML = years
-        .map(
-          (y) => `
-        <div class="year">${y}</div>
-        ${byYear[y]
-          .map(
-            (p) => `
-          <div class="pub">
-            <div><strong>${p.title}</strong></div>
-            <div class="meta">${p.authors} · <em>${p.venue || ''}</em></div>
-            <div class="links">${badgeLinks(p)}</div>
-          </div>`
-          )
-          .join('')}`
-        )
-        .join('');
-    }
+    list.innerHTML = pubs.map((p) => {
+      const authors = highlightAuthor(p.authors || '');
+      const badge = [p.venue, (typeof p.year === 'string' ? p.year.slice(0,4) : p.year)].filter(Boolean).join(' · ');
+      const kw = Array.isArray(p.keywords) ? p.keywords : (p.keywords ? String(p.keywords).split(/[;,]/).map(s=>s.trim()).filter(Boolean) : []);
+      const link = titleLink(p);
+      const titleHTML = link
+        ? `<a href="${link}" target="_blank" rel="noopener">${p.title}</a>`
+        : p.title;
+
+      return `
+        <article class="pub-item">
+          <div class="thumb">
+            ${p.thumb ? `<img src="${p.thumb}" alt="${p.title}">` : `<img src="assets/img/placeholder.svg" alt="no thumbnail">`}
+          </div>
+          <div class="content">
+            <span class="badge">${badge || ''}</span>
+            <h3>${titleHTML}</h3>
+            <p class="authors">${authors}</p>
+            ${kw.length ? `<div class="kw">${kw.map(k=>`<span class="tag">${k}</span>`).join('')}</div>` : ''}
+            ${ (p.pdf || p.code || p.project || p.doi) ? `<p class="links">${badgeLinks(p)}</p>` : '' }
+            ${ p.introduction ? `<p class="muted small">${p.introduction}</p>` : '' }
+          </div>
+        </article>
+      `;
+    }).join('');
   } catch (e) {
     console.warn('publications.json not found or invalid', e);
   }
