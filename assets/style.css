@@ -126,11 +126,11 @@ h3{ font-size: 20px; }
 
 #service-list {
   list-style-position: outside;
-  padding-left: 2.0em; /* 控制整体缩进 */
+  padding-left: 1.5em; /* 控制整体缩进 */
 }
 
 #service-list li {
-  text-indent: -1em; /* 防止第二行顶到左边 */
+  text-indent: -2em; /* 防止第二行顶到左边 */
   padding-left: 1em; /* 保证内容和项目符号对齐 */
 }
 
