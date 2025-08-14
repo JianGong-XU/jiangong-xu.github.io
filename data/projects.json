@@ -1,13 +1,14 @@
 [
   {
     "name": "Project Alpha",
-    "desc": "一句话介绍：目标/方法/结果。",
+    "desc": "A brief one-liner of goals and results.",
     "link": "https://github.com/JianGong-XU/alpha",
     "thumb": "assets/img/cover.jpg"
   },
   {
     "name": "Project Beta",
-    "desc": "第二个项目简介。",
+    "desc": "Another project.",
     "link": "https://jiangong-xu.github.io/beta/"
   }
 ]
+
