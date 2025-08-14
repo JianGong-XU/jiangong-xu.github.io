@@ -3,15 +3,14 @@
     "title": "PolNet-CR: Spatial-channel collaborative interaction network for PolSAR incremental information-assisted optical satellite imagery cloud removal",
     "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan, Liwen Cao, Mi Wang",
     "venue": "Information Fusion",
-    "year": "2025-05-26",
-    "doi": "10.1016/j.inffus.2025.103367",
+    "year": "2025",
     "url": "https://doi.org/10.1016/j.inffus.2025.103367",
     "selected": false,
     "thumb": "assets/img/IF_P1.jpg",
     "keywords": [
       "Cloud removal", "Interaction learning", "Image reconstruction", "Multimodal fusion", "PolSAR"
     ],
-    "introduction": "Key Words: Cloud removal; Interaction learning; Image reconstruction; Multimodal fusion network; PolSAR"
+    "introduction": "Cloud-contaminated optical satellite image reconstruction is crucial, but challenges from imaging gaps, speckle noise, and underused PolSAR polarization remain. This study proposes PolNet-CR and introduces the LuojiaSET-PolCR dataset, achieving superior cloud removal and high-fidelity imagery for seamless observation."
   },
   {
     "title": "Another Work",
