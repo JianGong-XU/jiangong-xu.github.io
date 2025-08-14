@@ -242,3 +242,9 @@ const badgeLinks = (o) =>
     console.warn('projects.json not found or invalid', e);
   }
 })();
+.chips { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px }
+.chip { display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
+        border:1px solid var(--border); border-radius:999px; background:transparent; cursor:pointer }
+.chip:hover { box-shadow:var(--shadow) }
+.chip:where(a){ text-decoration:none }
+.icon { width:16px; height:16px; fill: currentColor; display:inline-block }
