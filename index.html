@@ -1,161 +1,129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>JianGong XU · 徐建功</title>
-  <meta name="description" content="JianGong XU - Academic homepage" />
-  <link rel="icon" href="assets/img/avatar.jpg" />
-  <link rel="preload" href="assets/style.css" as="style">
-  <link rel="stylesheet" href="assets/style.css?v=20250814v3">
-  <script src="assets/script.js?v=20250814v3"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JianGong XU - Academic Homepage</title>
+  <link rel="stylesheet" href="assets/style.css?v=20250814v3" />
+  <script defer src="assets/script.js?v=20250814v3"></script>
 </head>
 <body>
-  <!-- 顶部导航 -->
-  <header class="site-header">
-    <div class="container nav">
-      <div class="brand">
-        <a href="#top">JianGong XU</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌓</button>
-      </div>
-      <nav>
-        <a href="#about" data-i18n="nav.about">About</a>
-        <a href="#news" data-i18n="nav.news">News</a>
-        <a href="#selected" data-i18n="nav.selected">Selected</a>
-        <a href="#pubs" data-i18n="nav.publications">Publications</a>
-        <a href="#projects" data-i18n="nav.projects">Projects</a>
-        <a href="#contact" data-i18n="nav.contact">Contact</a>
-        <a class="btn" href="assets/CV.pdf" target="_blank" rel="noopener">CV</a>
-        <select id="langSwitch" class="lang">
-          <option value="en" selected>EN</option>
-          <option value="zh">中文</option>
-        </select>
-      </nav>
-    </div>
+  <!-- ===== Header / Nav ===== -->
+  <header>
+    <nav>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#news" data-i18n="nav.news">News</a>
+      <a href="#publications" data-i18n="nav.publications">Publications</a>
+      <a href="#dataset" data-i18n="nav.dataset">Dataset</a>
+      <a href="#service" data-i18n="nav.service">Academic Service</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+    <select id="langSwitch">
+      <option value="en">English</option>
+      <option value="zh">中文</option>
+    </select>
+    <button id="themeToggle">🌓</button>
   </header>
 
-  <!-- 左侧页内目录 -->
-  <aside id="toc" class="toc"></aside>
+  <!-- ===== Hero ===== -->
+  <section id="hero">
+    <p data-i18n="hero.lead"></p>
+    <p data-i18n="hero.affil"></p>
+  </section>
 
-  <!-- 英雄区 -->
-  <section class="hero" id="top">
-    <div class="container hero-grid">
-      <div>
-        <h1>JianGong XU <span class="muted">/ 徐建功</span></h1>
-        <p class="lead" data-i18n="hero.lead">
-          Research on Machine Learning, Computer Vision, and Multimodal AI.
-        </p>
-        <p data-i18n="hero.affil">
-          Currently at <em>Your Institute / Lab</em>, focusing on A, B, C.
-        </p>
-        <div class="links chips">
-          <!-- Email -->
-          <a class="chip" href="mailto:dd_xjg@whu.edu.cn">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"/>
-            </svg>
-            Email
-          </a>
-        
-          <!-- GitHub -->
-          <a class="chip" href="https://github.com/JianGong-XU" target="_blank" rel="noopener">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 .5A12 12 0 0 0 0 12.7c0 5.4 3.4 10 8.2 11.6.6.1.8-.3.8-.6v-2.2c-3.3.8-4-1.6-4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.2-.8.1-.8.1-.8 1.3.1 2 .9 2 .9 1.2 2 3.1 1.5 3.8 1.2.1-.9.5-1.5.8-1.8-2.6-.3-5.4-1.3-5.4-6 0-1.3.5-2.4 1.3-3.3-.1-.3-.6-1.6.1-3.4 0 0 1-.3 3.4 1.3 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.6 3.3-1.3 3.3-1.3.7 1.8.2 3.1.1 3.4.9.9 1.3 2 1.3 3.3 0 4.7-2.8 5.7-5.4 6 .5.5.9 1.3.9 2.6v3.8c0 .3.2.7.8.6 4.8-1.6 8.2-6.2 8.2-11.6A12 12 0 0 0 12 .5Z"/>
-            </svg>
-            GitHub
-          </a>
+  <!-- ===== About ===== -->
+  <section id="about">
+    <h2 data-i18n="about.title"></h2>
+    <p data-i18n="about.p1"></p>
+  </section>
 
-          <!-- ResearchGate -->
-          <a class="chip" href="https://www.researchgate.net/profile/Xu-Jiangong-2?ev=hdr_xprf" target="_blank" rel="noopener">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M22.085 0H1.915C.857 0 0 .857 0 1.915v20.17C0 23.143.857 24 1.915 24h20.17C23.143 24 24 23.143 24 22.085V1.915C24 .857 23.143 0 22.085 0ZM7.463 6.65c.654 0 1.184.53 1.184 1.184 0 .654-.53 1.184-1.184 1.184a1.184 1.184 0 0 1 0-2.368Zm9.596 8.445c-.85 0-1.654-.245-2.329-.67l-2.405 3.627h1.61v1.423H7.44v-1.423h1.694l3.49-5.29-1.487-2.317a4.36 4.36 0 0 1-1.325.205 4.437 4.437 0 1 1 4.437-4.437 4.417 4.417 0 0 1-.638 2.298l1.688 2.63a4.236 4.236 0 0 1 1.213-.177 4.437 4.437 0 1 1 0 8.874Z"/>
-            </svg>
-            ResearchGate
-          </a>
+  <!-- ===== News ===== -->
+  <section id="news">
+    <h2 data-i18n="news.title"></h2>
+    <ul id="newsList"></ul>
+  </section>
 
-          <!-- Google Scholar -->
-          <a class="chip" href="https://scholar.google.com/citations?user=riugH98AAAAJ&hl=zh-CN&oi=ao" target="_blank" rel="noopener">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2 2 9l10 7 10-7-10-7Zm0 20-6-4v-3l6 4 6-4v3l-6 4Z"/>
-            </svg>
-            Google Scholar
-          </a>
-        </div>
-      </div>
-      <div class="avatar shadow-xl">
-        <img src="assets/img/avatar.jpg" alt="Avatar" />
-      </div>
+  <!-- ===== Publications ===== -->
+  <section id="publications">
+    <h2 data-i18n="pubs.title"></h2>
+    <div id="pubList"></div>
+  </section>
+
+  <!-- ===== Dataset ===== -->
+  <section id="dataset">
+    <h2>Dataset</h2>
+    <p>Coming soon...</p>
+  </section>
+
+  <!-- ===== Academic Service ===== -->
+  <section id="service">
+    <h2>Academic Service</h2>
+    <p>Coming soon...</p>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section id="contact">
+    <h2 data-i18n="contact.title"></h2>
+    <div class="chips">
+      <!-- Email -->
+      <a class="chip" href="mailto:dd_xjg@whu.edu.cn" title="Email">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 4H4c-1.1 0-2 .9-2 
+          2v12c0 1.1.9 2 2 2h16c1.1 
+          0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 
+          4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>Email
+      </a>
+      <!-- GitHub -->
+      <a class="chip" href="https://github.com/JianGong-XU" target="_blank" rel="noopener" title="GitHub">
+        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 
+          0 8c0 3.54 2.29 6.53 5.47 
+          7.59.4.07.55-.17.55-.38 
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53
+          -.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+          -.28-.15-.68-.52-.01-.53.63-.01 
+          1.08.58 1.23.82.72 1.21 1.87.87 
+          2.33.66.07-.52.28-.87.51-1.07
+          -1.78-.2-3.64-.89-3.64-3.95 
+          0-.87.31-1.59.82-2.15-.08-.2
+          -.36-1.02.08-2.12 0 0 .67-.21 
+          2.2.82.64-.18 1.32-.27 2-.27.68 
+          0 1.36.09 2 .27 1.53-1.04 2.2
+          -.82 2.2-.82.44 1.1.16 1.92.08 
+          2.12.51.56.82 1.27.82 2.15 
+          0 3.07-1.87 3.75-3.65 
+          3.95.29.25.54.73.54 1.48 
+          0 1.07-.01 1.93-.01 2.2 
+          0 .21.15.46.55.38A8.013 8.013 
+          0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>GitHub
+      </a>
+      <!-- ResearchGate -->
+      <a class="chip" href="https://www.researchgate.net/profile/Xu-Jiangong-2?ev=hdr_xprf" target="_blank" rel="noopener" title="ResearchGate">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#00CCBB" d="M0 0v24h24V0H0zm14.7 
+          16.6l-1.4-2.2c-.3-.4-.5-.8-.9-1-.2
+          -.2-.5-.3-.8-.4h-.4v3.6H9.2V7.5h3.4c.9 
+          0 1.6.2 2.2.7.6.5.9 1.1.9 2 
+          0 1.3-.7 2.1-1.9 2.5v.1c.3.1.6.3.8.6.3.3.5.6.7.9l1.6 
+          2.4h-1.2zM11.4 8.7h-1v2.7h.9c1 
+          0 1.6-.5 1.6-1.4 0-.9-.6-1.3-1.5-1.3z"/>
+        </svg>ResearchGate
+      </a>
+      <!-- Google Scholar -->
+      <a class="chip" href="https://scholar.google.com/citations?user=riugH98AAAAJ&hl=zh-CN&oi=ao" target="_blank" rel="noopener" title="Google Scholar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2L1 9l11 7 9-5.91V17h2V9L12 2z"/>
+          <path d="M3 13.74V19h6v-3.26L12 17l3-1.87V19h6v-5.26l-9 5.76-9-5.76z"/>
+        </svg>Google Scholar
+      </a>
     </div>
   </section>
 
-  <!-- About -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2 data-i18n="about.title">About</h2>
-      <p data-i18n="about.p1">
-        I am an X-year researcher/student. My interests include representation learning,
-        vision-language models, and efficient training.
-      </p>
-      <ul class="badges">
-        <li>Dark/Light</li><li>Responsive</li><li>Data-driven lists</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- News -->
-  <section id="news" class="section alt">
-    <div class="container">
-      <h2 data-i18n="news.title">News</h2>
-      <ul id="newsList" class="news"></ul>
-      <p class="muted small" data-i18n="news.note">Edit data/news.json to update.</p>
-    </div>
-  </section>
-
-  <!-- Selected Publications -->
-  <section id="selected" class="section">
-    <div class="container">
-      <h2 data-i18n="selected.title">Selected Publications</h2>
-      <div id="selGrid" class="grid"></div>
-    </div>
-  </section>
-
-  <!-- All Publications -->
-  <section id="pubs" class="section alt">
-    <div class="container">
-      <h2 data-i18n="pubs.title">Publications</h2>
-      <div id="pubList" class="pubs"></div>
-      <p class="muted small">data/publications.json</p>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects" class="section">
-    <div class="container">
-      <h2 data-i18n="projects.title">Projects</h2>
-      <div id="projGrid" class="grid"></div>
-      <p class="muted small">data/projects.json</p>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="section">
-    <div class="container">
-      <h2 data-i18n="contact.title">Contact</h2>
-      <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <span>© <span id="y"></span> JianGong XU</span>
-      <span> · GitHub Pages</span>
-    </div>
+  <!-- ===== Footer ===== -->
+  <footer>
+    <p>&copy; <span id="y"></span> JianGong XU</p>
   </footer>
-
-  <!-- 返回顶部 -->
-  <button id="backTop" class="backtop" aria-label="Back to top">↑</button>
-
-  <script src="assets/script.js"></script>
 </body>
 </html>
