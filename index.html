@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en" data-lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>JianGong XU | 徐建功</title>
-  <meta name="description" content="JianGong XU - Personal academic homepage" />
-  <link rel="icon" href="image/image.jpg" />
+  <title>JianGong XU · 徐建功</title>
+  <meta name="description" content="JianGong XU - Academic homepage" />
+  <link rel="icon" href="assets/img/avatar.jpg" />
   <link rel="preload" href="assets/style.css" as="style">
   <link rel="stylesheet" href="assets/style.css" />
 </head>
@@ -18,95 +18,113 @@
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌓</button>
       </div>
       <nav>
-        <a href="#about">关于</a>
-        <a href="#pubs">发表</a>
-        <a href="#projects">项目</a>
-        <a href="#service">经历</a>
-        <a href="#contact">联系</a>
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#news" data-i18n="nav.news">News</a>
+        <a href="#selected" data-i18n="nav.selected">Selected</a>
+        <a href="#pubs" data-i18n="nav.publications">Publications</a>
+        <a href="#projects" data-i18n="nav.projects">Projects</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
         <a class="btn" href="assets/CV.pdf" target="_blank" rel="noopener">CV</a>
+        <select id="langSwitch" class="lang">
+          <option value="en" selected>EN</option>
+          <option value="zh">中文</option>
+        </select>
       </nav>
     </div>
   </header>
+
+  <!-- 左侧页内目录 -->
+  <aside id="toc" class="toc"></aside>
 
   <!-- 英雄区 -->
   <section class="hero" id="top">
     <div class="container hero-grid">
       <div>
-        <h1>JianGong XU <span class="muted">| 徐建功</span></h1>
-        <p class="lead">研究方向：机器学习 · 计算机视觉 · 多模态。</p>
-        <p>目前于 <em>你的单位/学校</em>（可在 <code>index.html</code> 里直接改），关注 A、B、C 等课题。</p>
+        <h1>JianGong XU <span class="muted">/ 徐建功</span></h1>
+        <p class="lead" data-i18n="hero.lead">
+          Research on Machine Learning, Computer Vision, and Multimodal AI.
+        </p>
+        <p data-i18n="hero.affil">
+          Currently at <em>Your Institute / Lab</em>, focusing on A, B, C.
+        </p>
         <div class="links">
           <a href="mailto:you@example.com">Email</a>
           <a href="https://github.com/JianGong-XU" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://scholar.google.com/citations?hl=zh-CN&user=riugH98AAAAJ" target="_blank" rel="noopener">Google Scholar</a>
-          <a href="https://www.researchgate.net/profile/Xu-Jiangong-2?ev=hdr_xprf" target="_blank" rel="noopener">ResearchGate</a>
+          <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>
         </div>
       </div>
-      <div class="avatar">
+      <div class="avatar shadow-xl">
         <img src="assets/img/avatar.jpg" alt="Avatar" />
       </div>
     </div>
   </section>
 
-  <!-- 关于 -->
+  <!-- About -->
   <section id="about" class="section">
     <div class="container">
-      <h2>关于我</h2>
-      <p>
-        在这里用 3–5 句话介绍你的研究兴趣、近期工作与目标。该段落在 <code>index.html</code> 直接编辑即可。
+      <h2 data-i18n="about.title">About</h2>
+      <p data-i18n="about.p1">
+        I am an X-year researcher/student. My interests include representation learning,
+        vision-language models, and efficient training.
       </p>
       <ul class="badges">
-        <li>深色/浅色主题</li>
-        <li>响应式布局</li>
-        <li>数据驱动的论文/项目列表</li>
+        <li>Dark/Light</li><li>Responsive</li><li>Data-driven lists</li>
       </ul>
     </div>
   </section>
 
-  <!-- 发表 -->
+  <!-- News -->
+  <section id="news" class="section alt">
+    <div class="container">
+      <h2 data-i18n="news.title">News</h2>
+      <ul id="newsList" class="news"></ul>
+      <p class="muted small" data-i18n="news.note">Edit data/news.json to update.</p>
+    </div>
+  </section>
+
+  <!-- Selected Publications -->
+  <section id="selected" class="section">
+    <div class="container">
+      <h2 data-i18n="selected.title">Selected Publications</h2>
+      <div id="selGrid" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- All Publications -->
   <section id="pubs" class="section alt">
     <div class="container">
-      <h2>论文发表</h2>
+      <h2 data-i18n="pubs.title">Publications</h2>
       <div id="pubList" class="pubs"></div>
-      <p class="muted small">数据来源：<code>data/publications.json</code>（按年份分组，支持 PDF/Code/DOI 按钮）。</p>
+      <p class="muted small">data/publications.json</p>
     </div>
   </section>
 
-  <!-- 项目 -->
+  <!-- Projects -->
   <section id="projects" class="section">
     <div class="container">
-      <h2>项目</h2>
+      <h2 data-i18n="projects.title">Projects</h2>
       <div id="projGrid" class="grid"></div>
-      <p class="muted small">数据来源：<code>data/projects.json</code>。</p>
+      <p class="muted small">data/projects.json</p>
     </div>
   </section>
 
-  <!-- 经历/服务 -->
-  <section id="service" class="section alt">
-    <div class="container">
-      <h2>经历与服务</h2>
-      <ul class="timeline">
-        <li><span class="time">2024–至今</span> 研究生 / 单位 XX，导师 YY。</li>
-        <li><span class="time">2022–2024</span> 本科 / 学校 ZZ，专业 AA。</li>
-        <li><span class="time">审稿</span> NeurIPS、ICLR（示例，按需改）。</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 联系 -->
+  <!-- Contact -->
   <section id="contact" class="section">
     <div class="container">
-      <h2>联系方式</h2>
-      <p>Email：<a href="mailto:you@example.com">you@example.com</a> · GitHub：<a href="https://github.com/JianGong-XU">JianGong-XU</a></p>
+      <h2 data-i18n="contact.title">Contact</h2>
+      <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
     </div>
   </section>
 
   <footer class="footer">
     <div class="container">
       <span>© <span id="y"></span> JianGong XU</span>
-      <span> · Powered by GitHub Pages</span>
+      <span> · GitHub Pages</span>
     </div>
   </footer>
+
+  <!-- 返回顶部 -->
+  <button id="backTop" class="backtop" aria-label="Back to top">↑</button>
 
   <script src="assets/script.js"></script>
 </body>
