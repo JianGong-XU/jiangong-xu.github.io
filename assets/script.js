@@ -42,9 +42,9 @@ const I18N = {
     'about.title': 'About',
     // ✅ 研究兴趣（英文）
     'about.p1': `Based on multi-modal high spatio-temporal resolution remote sensing images, my research interests mainly include:
-<br>• Intelligent processing of remote sensing data: low-quality image restoration; multimodal image registration
-<br>• Real-time remote sensing processing in orbit: target/anomaly identification; change detection; semantic segmentation
-<br>• Remote sensing monitoring of the environment: inversion of terrestrial ecological parameters; large-scale ecological impact analysis`,
+<br>  • Intelligent processing of remote sensing data: low-quality image restoration; multimodal image registration
+<br>  • Real-time remote sensing processing in orbit: target/anomaly identification; change detection; semantic segmentation
+<br>  • Remote sensing monitoring of the environment: inversion of terrestrial ecological parameters; large-scale ecological impact analysis`,
 
     'news.title': 'News',
     'news.note': 'Edit data/news.json to update.',
@@ -73,9 +73,9 @@ const I18N = {
     'about.title': '关于我',
     // ✅ 研究兴趣（中文）
     'about.p1': `基于多模态高时空分辨率遥感影像，研究兴趣主要包括：
-<br>• 遥感数据智能处理：降质影像修复；多模态影像配准
-<br>• 遥感在轨实时服务：语义分割；目标/异常识别；变化检测
-<br>• 环境遥感监测：地表生态参数反演；大尺度生态影响分析`,
+<br>  • 遥感数据智能处理：降质影像修复；多模态影像配准
+<br>  • 遥感在轨实时服务：语义分割；目标/异常识别；变化检测
+<br>  • 环境遥感监测：地表生态参数反演；大尺度生态影响分析`,
 
     'news.title': '新闻',
     'news.note': '编辑 data/news.json 更新。',
