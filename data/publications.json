@@ -1,30 +1,25 @@
 [
   {
     "title": "PolNet-CR: Spatial-channel collaborative interaction network for PolSAR incremental information-assisted optical satellite imagery cloud removal",
-    "url": "https://www.sciencedirect.com/science/article/abs/pii/S1566253525004403",
-    "doi": "10.xxxx/xxxxx",         // 有 DOI 可写
-    "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan*, Liwen Cao, Mi Wang",  // 会自动把“Jiangong Xu”加粗
-    "venue": "ISPRS JPRS",
-    "year": 2025,                   // 或 "2025-05-26"
-    "thumb": "assets/img/IF_P1.jpg",  // 左侧缩略图
-    "keywords": ["Cloud removal";"Interaction learning";"Image reconstruction";"Multimodal fusion network";"Polarimetric SAR (PolSAR)"],  // 或 "k1; k2, k3"
-    "pdf": "assets/papers/xxx.pdf", // 可选；不提供就不显示
-    "code": "https://github.com/…", // 可选
-    "project": "https://project.page/…", // 可选
-    "introduction": "Cloud-contaminated optical satellite image reconstruction is crucial, but challenges from imaging gaps, speckle noise, and underused PolSAR polarization remain. This study proposes PolNet-CR and introduces the LuojiaSET-PolCR dataset, achieving superior cloud removal and high-fidelity imagery for seamless observation."
+    "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan, Liwen Cao, Mi Wang",
+    "venue": "Information Fusion",
+    "year": "2025-05-26",
+    "doi": "10.1016/j.inffus.2025.103367",
+    "url": "https://doi.org/10.1016/j.inffus.2025.103367",
+    "selected": false,
+    "thumb": "assets/img/IF_P1.jpg",
+    "keywords": [
+      "Cloud removal", "Interaction learning", "Image reconstruction", "Multimodal fusion", "PolSAR"
+    ],
+    "introduction": "Key Words: Cloud removal; Interaction learning; Image reconstruction; Multimodal fusion network; PolSAR"
   },
   {
-    "title": "PolNet-CR: Spatial-channel collaborative interaction network for PolSAR incremental information-assisted optical satellite imagery cloud removal",
-    "url": "https://www.sciencedirect.com/science/article/abs/pii/S1566253525004403",
-    "doi": "10.xxxx/xxxxx",         // 有 DOI 可写
-    "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan*, Liwen Cao, Mi Wang",  // 会自动把“Jiangong Xu”加粗
-    "venue": "ISPRS JPRS",
-    "year": 2025,                   // 或 "2025-05-26"
-    "thumb": "assets/img/IF_P1.jpg",  // 左侧缩略图
-    "keywords": ["Cloud removal";"Interaction learning";"Image reconstruction";"Multimodal fusion network";"Polarimetric SAR (PolSAR)"],  // 或 "k1; k2, k3"
-    "pdf": "assets/papers/xxx.pdf", // 可选；不提供就不显示
-    "code": "https://github.com/…", // 可选
-    "project": "https://project.page/…", // 可选
-    "introduction": "Cloud-contaminated optical satellite image reconstruction is crucial, but challenges from imaging gaps, speckle noise, and underused PolSAR polarization remain. This study proposes PolNet-CR and introduces the LuojiaSET-PolCR dataset, achieving superior cloud removal and high-fidelity imagery for seamless observation."
-  }, 
+    "title": "Another Work",
+    "authors": "Jiangong Xu, Collaborator C",
+    "venue": "ICML",
+    "year": 2024,
+    "url": "https://arxiv.org/abs/xxxx.xxxxx",
+    "thumb": "assets/img/placeholder.svg",
+    "keywords": []
+  }
 ]
