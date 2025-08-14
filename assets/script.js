@@ -63,9 +63,9 @@ const I18N = {
     'nav.contact': '联系',
 
     'hero.lead': `欢迎来到我的主页。
-<br>我是 <strong>徐建功</strong>，就读于 <a href="https://liesmars.whu.edu.cn/" target="_blank" rel="noopener">武汉大学测绘遥感信息工程国家重点实验室（LIESMARS）</a> 的博士研究生。
-<br>目前在 <a href="http://rspip.whu.edu.cn/index" target="_blank" rel="noopener">潘军</a> 与
-<a href="http://rsone.whu.edu.cn/" target="_blank" rel="noopener">王密</a> 老师指导下开展研究。`,
+<br>我是 <strong>徐建功</strong>，目前博士就读于 <a href="https://liesmars.whu.edu.cn/" target="_blank" rel="noopener">武汉大学测绘遥感信息工程国家重点实验室（LIESMARS）</a> 。
+<br>在 <a href="http://rspip.whu.edu.cn/index" target="_blank" rel="noopener">潘俊教授</a> 与
+<a href="http://rsone.whu.edu.cn/" target="_blank" rel="noopener">王密教授</a> 指导下开展研究。`,
 
     'hero.affil':
       `欢迎与我交流合作，对我的研究感兴趣可<a href="#contact">联系我</a>。`,
@@ -73,8 +73,8 @@ const I18N = {
     'about.title': '关于我',
     // ✅ 研究兴趣（中文）
     'about.p1': `基于多模态高时空分辨率遥感影像，研究兴趣主要包括：
-<br>• 遥感数据智能处理：低质量图像恢复；多模态图像配准
-<br>• 在轨实时遥感处理：目标/异常识别；变化检测；语义分割
+<br>• 遥感数据智能处理：降质影像修复；多模态影像配准
+<br>• 遥感在轨实时服务：语义分割；目标/异常识别；变化检测
 <br>• 环境遥感监测：地表生态参数反演；大尺度生态影响分析`,
 
     'news.title': '新闻',
