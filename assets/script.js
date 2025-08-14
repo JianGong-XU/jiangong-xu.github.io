@@ -1,4 +1,4 @@
-/* ================= Year ================= */ 
+/* ================= Year ================= */
 (() => {
   const y = document.getElementById('y');
   if (y) y.textContent = new Date().getFullYear();
@@ -29,7 +29,7 @@ const I18N = {
     'nav.dataset': 'Dataset',
     'nav.service': 'Academic Service',
     'nav.contact': 'Contact',
-    // 兼容你已有的键
+    // 兼容旧键
     'nav.selected': 'Selected',
     'nav.projects': 'Projects',
 
@@ -72,7 +72,7 @@ const I18N = {
     'nav.dataset': '数据集',
     'nav.service': '学术服务',
     'nav.contact': '联系方式',
-    // 兼容
+    // 兼容旧键
     'nav.selected': '精选',
     'nav.projects': '项目',
 
@@ -167,52 +167,63 @@ buildTOC();
 
 /* ============ Data loaders (JSON) ============ */
 /* —— 统一 cache busting，解决数据更新不生效 —— */
-const SITE_VER = '20250814v6'; // 与 <script src="...v=20250814v6"> 同步即可
-const bust = (url) => {
-  const ver = `${SITE_VER}-${Math.floor(Date.now()/60000)}`; // 每分钟变一次
-  return url + (url.includes('?') ? '&' : '?') + 'v=' + ver;
-};
+const V = '20250814v7'; // 与 index.html 中 ?v= 同步；改一次强制全站更新
+const withV = (url) => url + (url.includes('?') ? '&' : '?') + 'v=' + V;
 
 async function loadJSON(path) {
-  const res = await fetch(bust(path), { cache: 'no-store' });
+  const res = await fetch(withV(path), { cache: 'no-store' });
   if (!res.ok) throw new Error(`Fetch failed: ${path} ${res.status}`);
   return res.json();
 }
 
 /* 通用小工具：把 DOI/Code 等拼成链接（按需） */
-const badgeLinks = (o) =>
+const linkBadges = (o) =>
   [
     o.pdf && `<a href="${o.pdf}" target="_blank" rel="noopener">PDF</a>`,
     o.project && `<a href="${o.project}" target="_blank" rel="noopener">Project</a>`,
     o.code && `<a href="${o.code}" target="_blank" rel="noopener">Code</a>`,
     o.doi && `<a href="https://doi.org/${o.doi}" target="_blank" rel="noopener">DOI</a>`
   ]
-  .filter(Boolean)
-  .join(' | ');
+    .filter(Boolean)
+    .join(' | ');
 
 /* ============ News ============ */
-/* 小图标：支持 news.json 的 icon 字段；否则按文本推断 */
-function newsIcon(nameOrText = '') {
-  const n = (nameOrText.icon || nameOrText).toString().toLowerCase();
-  const t = (nameOrText.text || nameOrText).toString().toLowerCase();
+/* 支持 news.json 的 "icon" 字段；不写则按文本自动推断 */
+function newsIcon(nameOrObj = '') {
+  const icon = (nameOrObj.icon || '').toString().toLowerCase();
+  const text = (nameOrObj.text || nameOrObj || '').toString().toLowerCase();
 
-  const key = ['microphone','file-text','award','graduation-cap'].find(k => n.includes(k));
-  const byText =
-      /oral|presentation|poster/.test(t) ? 'microphone' :
-      /(accept|accepted|paper|publication|isprs|tgrs|inf\.? fusion|j\.)/.test(t) ? 'file-text' :
-      /(award|grant|highly cited|best|excellent)/.test(t) ? 'award' :
-      /(defense|thesis|master|ph\.?d|graduation)/.test(t) ? 'graduation-cap' :
-      null;
-
-  const use = key || byText || 'file-text';
+  const chosen =
+    icon ||
+    (/(oral|presentation|poster)/.test(text) && 'microphone') ||
+    (/(accept|accepted|paper|publication|isprs|tgrs|inf\.? fusion|j\.)/.test(text) && 'file-text') ||
+    (/(award|grant|highly cited|best|excellent)/.test(text) && 'award') ||
+    (/(defense|thesis|master|ph\.?d|graduation)/.test(text) && 'graduation-cap') ||
+    'file-text';
 
   const SVG = {
-    'microphone': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10a7 7 0 0 1-14 0"/><path d="M12 19v4"/><path d="M8 23h8"/></svg>`,
-    'file-text': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`,
-    'award': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.5 14 12 22l-3.5-8"/></svg>`,
-    'graduation-cap': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5a4 4 0 0 0 8 0v-5"/></svg>`
+    'microphone':
+      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M12 1a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+         <path d="M19 10a7 7 0 0 1-14 0"/>
+         <path d="M12 19v4"/><path d="M8 23h8"/>
+       </svg>`,
+    'file-text':
+      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+         <path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/>
+       </svg>`,
+    'award':
+      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <circle cx="12" cy="8" r="6"/><path d="M15.5 14 12 22l-3.5-8"/>
+       </svg>`,
+    'graduation-cap':
+      `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5a4 4 0 0 0 8 0v-5"/>
+       </svg>`
   };
-  return SVG[use];
+
+  return SVG[chosen];
 }
 
 (async () => {
@@ -223,11 +234,7 @@ function newsIcon(nameOrText = '') {
     box.innerHTML = data
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .map((n) =>
-        `<li>
-          ${newsIcon(n)}
-          <span class="date">${n.date}</span>
-          <span class="news-text">${n.text}</span>
-        </li>`
+        `<li>${newsIcon(n)} <span class="date">${n.date}</span> <span class="news-text">${n.text}</span></li>`
       )
       .join('');
   } catch (e) {
@@ -235,7 +242,7 @@ function newsIcon(nameOrText = '') {
   }
 })();
 
-/* ============ Publications（TP 左图右文） ============ */
+/* ============ Publications（TP左图右文；无精选） ============ */
 (async () => {
   const list = document.getElementById('pubList');
   if (!list) return;
@@ -267,8 +274,11 @@ function newsIcon(nameOrText = '') {
 
     list.innerHTML = pubs.map((p) => {
       const authors = highlightAuthor(p.authors || '');
-      const badge = [p.venue, (typeof p.year === 'string' ? p.year.slice(0,4) : p.year)].filter(Boolean).join(' · ');
-      const kw = Array.isArray(p.keywords) ? p.keywords : (p.keywords ? String(p.keywords).split(/[;,]/).map(s=>s.trim()).filter(Boolean) : []);
+      const badge = [p.venue, (typeof p.year === 'string' ? p.year.slice(0,4) : p.year)]
+        .filter(Boolean).join(' · ');
+      const kw = Array.isArray(p.keywords)
+        ? p.keywords
+        : (p.keywords ? String(p.keywords).split(/[;,]/).map(s=>s.trim()).filter(Boolean) : []);
       const link = titleLink(p);
       const titleHTML = link
         ? `<a href="${link}" target="_blank" rel="noopener">${p.title}</a>`
@@ -277,14 +287,15 @@ function newsIcon(nameOrText = '') {
       return `
         <article class="pub-item">
           <div class="thumb">
-            ${p.thumb ? `<img src="${p.thumb}" alt="${p.title}">` : `<img src="assets/img/placeholder.svg" alt="no thumbnail">`}
+            ${p.thumb ? `<img src="${p.thumb}" alt="${p.title}">`
+                      : `<img src="assets/img/placeholder.svg" alt="no thumbnail">`}
           </div>
           <div class="content">
             <span class="badge">${badge || ''}</span>
             <h3>${titleHTML}</h3>
             <p class="authors">${authors}</p>
             ${kw.length ? `<div class="kw">${kw.map(k=>`<span class="tag">${k}</span>`).join('')}</div>` : ''}
-            ${ (p.pdf || p.code || p.project || p.doi) ? `<p class="links">${badgeLinks(p)}</p>` : '' }
+            ${ (p.pdf || p.code || p.project || p.doi) ? `<p class="links">${linkBadges(p)}</p>` : '' }
             ${ p.introduction ? `<p class="muted small">${p.introduction}</p>` : '' }
           </div>
         </article>
@@ -301,16 +312,13 @@ function newsIcon(nameOrText = '') {
   if (!grid) return;
   try {
     const projs = await loadJSON('data/projects.json');
-    grid.innerHTML = projs
-      .map(
-        (p) => `
+    grid.innerHTML = projs.map((p) => `
       <article class="card">
         ${p.thumb ? `<img src="${p.thumb}" alt="${p.name}">` : ''}
         <h3><a href="${p.link}" target="_blank" rel="noopener">${p.name}</a></h3>
         <p>${p.desc || ''}</p>
-      </article>`
-      )
-      .join('');
+      </article>
+    `).join('');
   } catch (e) {
     console.warn('projects.json not found or invalid', e);
   }
@@ -322,25 +330,22 @@ function newsIcon(nameOrText = '') {
   if (!box) return;
   try {
     const data = await loadJSON('data/datasets.json');
-    const html = data
-      .map((d) => `
-        <article class="card">
-          ${d.thumb ? `<img src="${d.thumb}" alt="${d.name}">` : ''}
-          <h3>${d.name}</h3>
-          <p class="meta">${d.year || ''} ${d.venue ? '· ' + d.venue : ''}</p>
-          <p>${d.desc || ''}</p>
-          <p class="links">
-            ${[
-              d.home && `<a href="${d.home}" target="_blank">Home</a>`,
-              d.paper && `<a href="${d.paper}" target="_blank">Paper</a>`,
-              d.code && `<a href="${d.code}" target="_blank">Code</a>`,
-              d.data && `<a href="${d.data}" target="_blank">Data</a>`
-            ].filter(Boolean).join(' ')}
-          </p>
-        </article>
-      `)
-      .join('');
-    box.innerHTML = html;
+    box.innerHTML = data.map((d) => `
+      <article class="card">
+        ${d.thumb ? `<img src="${d.thumb}" alt="${d.name}">` : ''}
+        <h3>${d.name}</h3>
+        <p class="meta">${d.year || ''} ${d.venue ? '· ' + d.venue : ''}</p>
+        <p>${d.desc || ''}</p>
+        <p class="links">
+          ${[
+            d.home && `<a href="${d.home}" target="_blank" rel="noopener">Home</a>`,
+            d.paper && `<a href="${d.paper}" target="_blank" rel="noopener">Paper</a>`,
+            d.code && `<a href="${d.code}" target="_blank" rel="noopener">Code</a>`,
+            d.data && `<a href="${d.data}" target="_blank" rel="noopener">Data</a>`
+          ].filter(Boolean).join(' ')}
+        </p>
+      </article>
+    `).join('');
   } catch (e) {
     console.warn('datasets.json not found or invalid', e);
   }
