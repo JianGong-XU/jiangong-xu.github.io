@@ -62,5 +62,13 @@ nav .btn{padding:6px 10px;border:1px solid var(--border);border-radius:10px}
 
 .backtop{position:fixed;right:18px;bottom:22px;border:1px solid var(--border);background:var(--bg);border-radius:999px;padding:10px 12px;cursor:pointer;box-shadow:var(--shadow);display:none}
 
+.chips { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px }
+.chip { display:inline-flex; align-items:center; gap:8px; padding:6px 10px;
+        border:1px solid var(--border); border-radius:999px; background:transparent; cursor:pointer }
+.chip:hover { box-shadow:var(--shadow) }
+.chip:where(a){ text-decoration:none }
+.icon { width:16px; height:16px; fill: currentColor; display:inline-block }
+
+
 @media (min-width:1200px){ .toc{display:block} }
 @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} .toc{display:none} }
