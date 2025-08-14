@@ -1,22 +1,21 @@
 [
   {
-    "title": "Your Paper Title",
-    "authors": "JianGong XU, Collaborator A, Collaborator B",
-    "venue": "NeurIPS",
-    "year": 2025,
-    "pdf": "assets/papers/your-paper.pdf",
-    "code": "https://github.com/JianGong-XU/your-repo",
-    "doi": "10.xxxx/xxxxxx",
+    "title": "PolNet-CR: Spatial-channel collaborative interaction network for PolSAR incremental information-assisted optical satellite imagery cloud removal",
+    "authors": "**Jiangong Xu**, Xiaoyu Yu, Jun Pan, Liwen Cao, Mi Wang",
+    "venue": "Inf. Fusion",
+    "year": "2025-05-26",
+    "doi": "10.1016/j.inffus.2025.103367",
     "selected": true,
-    "thumb": "assets/img/cover.jpg",
-    "abs": "We propose ..."
+    "thumb": "assets/img/IF_P1.jpg",
+    "abs": "Key Words: Cloud removal; Interaction learning; Image reconstruction; Multimodal fusion network; Polarimetric SAR (PolSAR)",
+    "introduction": "Reconstructing cloud-contaminated optical satellite images is vital for continuous monitoring. Despite PolSAR fusion advances, challenges like imaging gaps, speckle noise, and underused polarization hinder quality. This paper proposes PolNet-CR, a spatial-channel collaborative network with cross-scale aggregation, sparse channel optimization, and incremental collaboration for adaptive cross-domain feature fusion. A new dataset, LuojiaSET-PolCR, with PolSAR scattering features is introduced. Experiments show PolNet-CR surpasses existing methods, enabling high-fidelity, cloud-free imagery for seamless observation."
   },
   {
     "title": "Another Work",
-    "authors": "JianGong XU, Collaborator C",
+    "authors": "**Jiangong Xu**, Collaborator C",
     "venue": "ICML",
     "year": 2024,
-    "pdf": "https://arxiv.org/abs/xxxx.xxxxx",
-    "selected": false
+    "selected": true,
+    "introduction": "This work explores novel methods in the ICML domain, contributing to the advancement of machine learning research."
   }
 ]
