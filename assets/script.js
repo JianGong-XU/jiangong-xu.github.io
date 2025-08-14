@@ -1,16 +1,15 @@
-// ====== Year ======
+/* ================= Year ================= */
 (() => {
   const y = document.getElementById('y');
   if (y) y.textContent = new Date().getFullYear();
 })();
 
-// ====== Theme (dark / light) ======
+/* ================= Theme ================= */
 (() => {
   const KEY = 'theme';
   const btn = document.getElementById('themeToggle');
   const saved = localStorage.getItem(KEY);
   if (saved === 'dark') document.documentElement.classList.add('dark');
-
   btn?.addEventListener('click', () => {
     document.documentElement.classList.toggle('dark');
     localStorage.setItem(
@@ -20,7 +19,7 @@
   });
 })();
 
-// ====== I18N ======
+/* ================= I18N ================= */
 const I18N = {
   en: {
     'nav.about': 'About',
@@ -30,17 +29,22 @@ const I18N = {
     'nav.projects': 'Projects',
     'nav.contact': 'Contact',
 
-    'hero.lead':
-      'Research on Machine Learning, Computer Vision, and Multimodal AI.',
+    // ✅ 用模板字符串，允许 <br> 与 <a> 等 HTML
+    'hero.lead': `Welcome to my academic homepage.
+<br>I am <strong>JianGong XU</strong>, a Ph.D. candidate at the <a href="https://liesmars.whu.edu.cn/" target="_blank" rel="noopener">State Key Laboratory of Information Engineering in Surveying, Mapping and Remote Sensing (LIESMARS), Wuhan University</a>.
+<br>Currently conducting research under the guidance of Professors
+<a href="http://rspip.whu.edu.cn/index" target="_blank" rel="noopener">Jun PAN</a> and
+<a href="http://rsone.whu.edu.cn/" target="_blank" rel="noopener">Mi WANG</a>.`,
+
     'hero.affil':
-      'Currently at <em>Your Institute / Lab</em>, focusing on A, B, C.',
+      `I am open to collaboration and welcome inquiries from anyone interested in my research. Please feel free to <a href="#contact">contact</a>.`,
 
     'about.title': 'About',
-    // ✅ 你的研究兴趣英文版（支持换行）
+    // ✅ 研究兴趣（英文）
     'about.p1': `Based on multi-modal high spatio-temporal resolution remote sensing images, my research interests mainly include:
-<br>• Intelligent processing of remote sensing data: All-in-one Image Restoration; Multimodal image registration
-<br>• Real-time remote sensing processing in orbit: Target/Anomaly identification; Change detection; Semantic segmentation
-<br>• Remote sensing monitoring of the environment: Inversion of terrestrial ecological parameters; Large-scale ecological impact analysis`,
+<br>• Intelligent processing of remote sensing data: low-quality image restoration; multimodal image registration
+<br>• Real-time remote sensing processing in orbit: target/anomaly identification; change detection; semantic segmentation
+<br>• Remote sensing monitoring of the environment: inversion of terrestrial ecological parameters; large-scale ecological impact analysis`,
 
     'news.title': 'News',
     'news.note': 'Edit data/news.json to update.',
@@ -58,15 +62,20 @@ const I18N = {
     'nav.projects': '项目',
     'nav.contact': '联系',
 
-    'hero.lead': '研究方向：机器学习、计算机视觉与多模态。',
-    'hero.affil': '目前于 <em>你的单位/实验室</em>，关注 A、B、C 等课题。',
+    'hero.lead': `欢迎来到我的主页。
+<br>我是 <strong>徐建功</strong>，就读于 <a href="https://liesmars.whu.edu.cn/" target="_blank" rel="noopener">武汉大学测绘遥感信息工程国家重点实验室（LIESMARS）</a> 的博士研究生。
+<br>目前在 <a href="http://rspip.whu.edu.cn/index" target="_blank" rel="noopener">潘军</a> 与
+<a href="http://rsone.whu.edu.cn/" target="_blank" rel="noopener">王密</a> 老师指导下开展研究。`,
+
+    'hero.affil':
+      `欢迎与我交流合作，对我的研究感兴趣可<a href="#contact">联系我</a>。`,
 
     'about.title': '关于我',
-    // ✅ 你的研究兴趣中文版（支持换行）
+    // ✅ 研究兴趣（中文）
     'about.p1': `基于多模态高时空分辨率遥感影像，研究兴趣主要包括：
-<br>• 遥感数据智能处理：降质影像复原；多模态影像配准
-<br>• 遥感在轨实时服务：语义分割；目标/异常识别；变化检测
-<br>• 生态环境遥感监测：地表生态参数反演；大尺度生态影响分析`,
+<br>• 遥感数据智能处理：低质量图像恢复；多模态图像配准
+<br>• 在轨实时遥感处理：目标/异常识别；变化检测；语义分割
+<br>• 环境遥感监测：地表生态参数反演；大尺度生态影响分析`,
 
     'news.title': '新闻',
     'news.note': '编辑 data/news.json 更新。',
@@ -82,8 +91,8 @@ function applyLang(lang) {
   localStorage.setItem('lang', lang);
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n');
-    const dict = I18N[lang]?.[key];
-    if (dict) el.innerHTML = dict; // 用 innerHTML 支持换行/强调
+    const txt = I18N[lang]?.[key];
+    if (txt != null) el.innerHTML = txt; // 用 innerHTML 渲染
   });
 }
 
@@ -97,19 +106,14 @@ function applyLang(lang) {
   }
 })();
 
-// ====== Left TOC (auto) + Active highlight ======
+/* ================= TOC ================= */
 (() => {
   const toc = document.getElementById('toc');
   if (!toc) return;
-
   const sections = [...document.querySelectorAll('section[id]')];
   toc.innerHTML = sections
-    .map((s) => {
-      const title = s.querySelector('h2')?.textContent || s.id;
-      return `<a href="#${s.id}">${title}</a>`;
-    })
+    .map((s) => `<a href="#${s.id}">${s.querySelector('h2')?.textContent || s.id}</a>`)
     .join('');
-
   const links = toc.querySelectorAll('a');
   const io = new IntersectionObserver(
     (entries) => {
@@ -126,17 +130,19 @@ function applyLang(lang) {
   sections.forEach((s) => io.observe(s));
 })();
 
-// ====== Back to top ======
+/* ============== Back to top ============== */
 (() => {
   const btn = document.getElementById('backTop');
   if (!btn) return;
   const toggle = () => (btn.style.display = window.scrollY > 300 ? 'block' : 'none');
   window.addEventListener('scroll', toggle);
   toggle();
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  btn.addEventListener('click', () =>
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  );
 })();
 
-// ====== Data loaders (news / publications / projects) ======
+/* ============ Data loaders ============ */
 async function loadJSON(path) {
   const res = await fetch(path);
   if (!res.ok) throw new Error(`Fetch failed: ${path}`);
@@ -162,12 +168,11 @@ const badgeLinks = (o) =>
       .map((n) => `<li><span class="date">${n.date}</span> ${n.text}</li>`)
       .join('');
   } catch (e) {
-    // 非致命
     console.warn('news.json not found or invalid', e);
   }
 })();
 
-// Publications: selected + all (group by year)
+// Publications
 (async () => {
   const sel = document.getElementById('selGrid');
   const all = document.getElementById('pubList');
@@ -175,7 +180,6 @@ const badgeLinks = (o) =>
   try {
     const pubs = await loadJSON('data/publications.json');
 
-    // Selected
     if (sel) {
       const selected = pubs.filter((p) => p.selected);
       sel.innerHTML = selected
@@ -192,7 +196,6 @@ const badgeLinks = (o) =>
         .join('');
     }
 
-    // All (by year)
     if (all) {
       const byYear = {};
       pubs.forEach((p) => ((byYear[p.year] ||= []).push(p)));
