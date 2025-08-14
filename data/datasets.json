@@ -1,0 +1,13 @@
+[
+  {
+    "name": "RS-Multimodal-1K",
+    "year": 2025,
+    "venue": "Demo",
+    "desc": "A sample multimodal remote sensing dataset.",
+    "home": "https://example.com",
+    "paper": "https://arxiv.org/abs/0000.00000",
+    "code": "https://github.com/JianGong-XU/rs-mm-1k",
+    "data": "https://example.com/download",
+    "thumb": "assets/img/cover.jpg"
+  }
+]
