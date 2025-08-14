@@ -128,4 +128,68 @@ h3{ font-size: 20px; }
   padding-left: 20px; /* 或你想要的缩进 */
 }
 
+/* ===== TP-style Publications (left-thumb, right-content) ===== */
+.tp-list { display: flex; flex-direction: column; gap: 18px; }
+
+.pub-item{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.pub-item .thumb{
+  align-self: start;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.pub-item .thumb img{ width: 100%; height: auto; display:block; }
+
+.pub-item .content{ display:flex; flex-direction:column; gap:8px; }
+
+.pub-item .badge{
+  display:inline-block;
+  border:1px solid var(--border);
+  background: rgba(88,166,255,.09);
+  color: var(--fg);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: .9rem;
+}
+
+.pub-item h3{
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+.pub-item h3 a{ color: var(--link); text-decoration: none; }
+.pub-item h3 a:hover{ text-decoration: underline; }
+
+.pub-item .authors{ margin:0; color: var(--fg); font-size:.98rem; }
+.pub-item .authors b{ font-weight: 700; }
+
+.pub-item .links{ margin: 2px 0 0; }
+.pub-item .links a{ margin-right: 12px; }
+
+.pub-item .kw{ display:flex; flex-wrap:wrap; gap:6px; margin-top: 2px; }
+.pub-item .kw .tag{
+  font-size: .85rem;
+  border:1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: transparent;
+  color: var(--muted);
+}
+
+/* small screens */
+@media (max-width: 720px){
+  .pub-item{ grid-template-columns: 1fr; }
+}
+
+
 
