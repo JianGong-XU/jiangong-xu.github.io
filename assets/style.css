@@ -126,7 +126,7 @@ h3{ font-size: 20px; }
 
 #service-list {
   list-style-position: outside;
-  padding-left: 1.5em; /* 控制整体缩进 */
+  padding-left: 2.0em; /* 控制整体缩进 */
 }
 
 #service-list li {
