@@ -1,4 +1,4 @@
-/* ================= Year ================= */
+/* ================= Year ================= */ 
 (() => {
   const y = document.getElementById('y');
   if (y) y.textContent = new Date().getFullYear();
@@ -29,7 +29,7 @@ const I18N = {
     'nav.dataset': 'Dataset',
     'nav.service': 'Academic Service',
     'nav.contact': 'Contact',
-    // 兼容你已有的键（如果页面里还在用）
+    // 兼容你已有的键
     'nav.selected': 'Selected',
     'nav.projects': 'Projects',
 
@@ -166,22 +166,55 @@ buildTOC();
 })();
 
 /* ============ Data loaders (JSON) ============ */
+/* —— 统一 cache busting，解决数据更新不生效 —— */
+const SITE_VER = '20250814v6'; // 与 <script src="...v=20250814v6"> 同步即可
+const bust = (url) => {
+  const ver = `${SITE_VER}-${Math.floor(Date.now()/60000)}`; // 每分钟变一次
+  return url + (url.includes('?') ? '&' : '?') + 'v=' + ver;
+};
+
 async function loadJSON(path) {
-  const res = await fetch(path);
-  if (!res.ok) throw new Error(`Fetch failed: ${path}`);
+  const res = await fetch(bust(path), { cache: 'no-store' });
+  if (!res.ok) throw new Error(`Fetch failed: ${path} ${res.status}`);
   return res.json();
 }
 
+/* 通用小工具：把 DOI/Code 等拼成链接（按需） */
 const badgeLinks = (o) =>
   [
-    o.pdf && `<a href="${o.pdf}" target="_blank">PDF</a>`,
-    o.code && `<a href="${o.code}" target="_blank">Code</a>`,
-    o.doi && `<a href="https://doi.org/${o.doi}" target="_blank">DOI</a>`
+    o.pdf && `<a href="${o.pdf}" target="_blank" rel="noopener">PDF</a>`,
+    o.project && `<a href="${o.project}" target="_blank" rel="noopener">Project</a>`,
+    o.code && `<a href="${o.code}" target="_blank" rel="noopener">Code</a>`,
+    o.doi && `<a href="https://doi.org/${o.doi}" target="_blank" rel="noopener">DOI</a>`
   ]
-    .filter(Boolean)
-    .join(' ');
+  .filter(Boolean)
+  .join(' | ');
 
-// ---- News ----
+/* ============ News ============ */
+/* 小图标：支持 news.json 的 icon 字段；否则按文本推断 */
+function newsIcon(nameOrText = '') {
+  const n = (nameOrText.icon || nameOrText).toString().toLowerCase();
+  const t = (nameOrText.text || nameOrText).toString().toLowerCase();
+
+  const key = ['microphone','file-text','award','graduation-cap'].find(k => n.includes(k));
+  const byText =
+      /oral|presentation|poster/.test(t) ? 'microphone' :
+      /(accept|accepted|paper|publication|isprs|tgrs|inf\.? fusion|j\.)/.test(t) ? 'file-text' :
+      /(award|grant|highly cited|best|excellent)/.test(t) ? 'award' :
+      /(defense|thesis|master|ph\.?d|graduation)/.test(t) ? 'graduation-cap' :
+      null;
+
+  const use = key || byText || 'file-text';
+
+  const SVG = {
+    'microphone': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10a7 7 0 0 1-14 0"/><path d="M12 19v4"/><path d="M8 23h8"/></svg>`,
+    'file-text': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>`,
+    'award': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.5 14 12 22l-3.5-8"/></svg>`,
+    'graduation-cap': `<svg class="ic ic-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5a4 4 0 0 0 8 0v-5"/></svg>`
+  };
+  return SVG[use];
+}
+
 (async () => {
   const box = document.getElementById('newsList');
   if (!box) return;
@@ -189,37 +222,32 @@ const badgeLinks = (o) =>
     const data = await loadJSON('data/news.json');
     box.innerHTML = data
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .map((n) => `<li><span class="date">${n.date}</span> ${n.text}</li>`)
+      .map((n) =>
+        `<li>
+          ${newsIcon(n)}
+          <span class="date">${n.date}</span>
+          <span class="news-text">${n.text}</span>
+        </li>`
+      )
       .join('');
   } catch (e) {
     console.warn('news.json not found or invalid', e);
   }
 })();
 
-// Publications (TP-style, no "Selected", title is a hyperlink, show keywords)
+/* ============ Publications（TP 左图右文） ============ */
 (async () => {
   const list = document.getElementById('pubList');
   if (!list) return;
 
-  const YOU = 'Jiangong Xu'; // 你自己的名字（用于加粗）
+  const YOU = 'Jiangong Xu'; // 你的名字（用于加粗）
 
-  // 把作者字符串里出现的你的名字加粗（忽略大小写，尽量稳妥）
   function highlightAuthor(authorsStr) {
     if (!authorsStr) return '';
     const re = new RegExp('\\b' + YOU.replace(/\s+/g, '\\s+') + '\\b', 'i');
     return authorsStr.replace(re, (m) => `<b>${m}</b>`);
   }
 
-  // 生成右下角链接
-  const badgeLinks = (o) => [
-    // 不强制提供 PDF；前端只在存在时渲染
-    o.pdf && `<a href="${o.pdf}" target="_blank" rel="noopener">PDF</a>`,
-    o.project && `<a href="${o.project}" target="_blank" rel="noopener">Project</a>`,
-    o.code && `<a href="${o.code}" target="_blank" rel="noopener">Code</a>`,
-    o.doi && `<a href="https://doi.org/${o.doi}" target="_blank" rel="noopener">DOI</a>`
-  ].filter(Boolean).join(' | ');
-
-  // 链接优先级：url > doi > 无链接
   function titleLink(p) {
     if (p.url) return p.url;
     if (p.doi) return `https://doi.org/${p.doi}`;
@@ -267,7 +295,7 @@ const badgeLinks = (o) =>
   }
 })();
 
-// ---- Projects (optional; only renders if container exists) ----
+/* ============ Projects（可选） ============ */
 (async () => {
   const grid = document.getElementById('projGrid');
   if (!grid) return;
@@ -288,7 +316,7 @@ const badgeLinks = (o) =>
   }
 })();
 
-// ---- Dataset ----
+/* ============ Dataset ============ */
 (async () => {
   const box = document.getElementById('datasetGrid') || document.getElementById('datasetList');
   if (!box) return;
@@ -318,15 +346,21 @@ const badgeLinks = (o) =>
   }
 })();
 
-// ---- Academic Service ----
+/* ============ Academic Service ============ */
 (async () => {
   const box = document.getElementById('serviceList');
   if (!box) return;
   try {
     const items = await loadJSON('data/service.json');
-    box.innerHTML = items
-      .map((s) => `<li>• ${s.text || s}</li>`)
-      .join('');
+    // 支持两种写法：
+    // 1) [{ "text": "Assistant Editor: ..." }, { "text": "Reviewer: ..." }]
+    // 2) [{ "text": "Reviewer:", "items": ["Inf. Fusion", "..."] }]
+    box.innerHTML = items.map((s) => {
+      if (Array.isArray(s.items) && s.items.length) {
+        return `<li>${s.text || ''}<ul>${s.items.map(x=>`<li>${x}</li>`).join('')}</ul></li>`;
+      }
+      return `<li>${s.text || s}</li>`; // 不再手写 "•"，避免双点
+    }).join('');
   } catch (e) {
     console.warn('service.json not found or invalid', e);
   }
