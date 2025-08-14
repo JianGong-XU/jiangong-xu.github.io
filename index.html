@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JianGong XU | 徐建功</title>
+  <meta name="description" content="JianGong XU - Personal academic homepage" />
+  <link rel="icon" href="assets/img/avatar.jpg" />
+  <link rel="preload" href="assets/style.css" as="style">
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <a href="#top">JianGong XU</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌓</button>
+      </div>
+      <nav>
+        <a href="#about">关于</a>
+        <a href="#pubs">发表</a>
+        <a href="#projects">项目</a>
+        <a href="#service">经历</a>
+        <a href="#contact">联系</a>
+        <a class="btn" href="assets/CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 英雄区 -->
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+      <div>
+        <h1>JianGong XU <span class="muted">| 徐建功</span></h1>
+        <p class="lead">研究方向：机器学习 · 计算机视觉 · 多模态。</p>
+        <p>目前于 <em>你的单位/学校</em>（可在 <code>index.html</code> 里直接改），关注 A、B、C 等课题。</p>
+        <div class="links">
+          <a href="mailto:you@example.com">Email</a>
+          <a href="https://github.com/JianGong-XU" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>
+        </div>
+      </div>
+      <div class="avatar">
+        <img src="assets/img/avatar.jpg" alt="Avatar" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于 -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>关于我</h2>
+      <p>
+        在这里用 3–5 句话介绍你的研究兴趣、近期工作与目标。该段落在 <code>index.html</code> 直接编辑即可。
+      </p>
+      <ul class="badges">
+        <li>深色/浅色主题</li>
+        <li>响应式布局</li>
+        <li>数据驱动的论文/项目列表</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 发表 -->
+  <section id="pubs" class="section alt">
+    <div class="container">
+      <h2>论文发表</h2>
+      <div id="pubList" class="pubs"></div>
+      <p class="muted small">数据来源：<code>data/publications.json</code>（按年份分组，支持 PDF/Code/DOI 按钮）。</p>
+    </div>
+  </section>
+
+  <!-- 项目 -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>项目</h2>
+      <div id="projGrid" class="grid"></div>
+      <p class="muted small">数据来源：<code>data/projects.json</code>。</p>
+    </div>
+  </section>
+
+  <!-- 经历/服务 -->
+  <section id="service" class="section alt">
+    <div class="container">
+      <h2>经历与服务</h2>
+      <ul class="timeline">
+        <li><span class="time">2024–至今</span> 研究生 / 单位 XX，导师 YY。</li>
+        <li><span class="time">2022–2024</span> 本科 / 学校 ZZ，专业 AA。</li>
+        <li><span class="time">审稿</span> NeurIPS、ICLR（示例，按需改）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>联系方式</h2>
+      <p>Email：<a href="mailto:you@example.com">you@example.com</a> · GitHub：<a href="https://github.com/JianGong-XU">JianGong-XU</a></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <span>© <span id="y"></span> JianGong XU</span>
+      <span> · Powered by GitHub Pages</span>
+    </div>
+  </footer>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
