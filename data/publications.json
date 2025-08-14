@@ -1,7 +1,7 @@
 [
   {
     "title": "PolNet-CR: Spatial-channel collaborative interaction network for PolSAR incremental information-assisted optical satellite imagery cloud removal",
-    "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan, Liwen Cao, Mi Wang",
+    "authors": "_Jiangong Xu_, Xiaoyu Yu, Jun Pan*, Liwen Cao, Mi Wang",
     "venue": "Information Fusion",
     "year": "2025",
     "url": "https://doi.org/10.1016/j.inffus.2025.103367",
