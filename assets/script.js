@@ -208,7 +208,7 @@ function esc(s = '') {
   function highlightAuthor(authorsStr) {
     if (!authorsStr) return '';
     const re = new RegExp('\\b' + YOU.replace(/\s+/g, '\\s+') + '\\b', 'i');
-    return authorsStr.replace(re, (m) => `<b>${m}</b>`);
+    return authorsStr.replace(re, (m) => `<b><u>${m}</u></b>`);
   }
 
   function titleLink(p) {
