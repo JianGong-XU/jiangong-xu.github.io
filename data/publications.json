@@ -1,7 +1,7 @@
 [
   {
     "title": "PolNet-CR: Spatial-channel collaborative interaction network for PolSAR incremental information-assisted optical satellite imagery cloud removal",
-    "authors": "_Jiangong Xu_, Xiaoyu Yu, Jun Pan*, Liwen Cao, Mi Wang",
+    "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan*, Liwen Cao, Mi Wang",
     "venue": "Information Fusion",
     "year": "2025",
     "url": "https://doi.org/10.1016/j.inffus.2025.103367",
@@ -13,12 +13,113 @@
     "introduction": "Cloud-contaminated optical satellite image reconstruction is crucial, but challenges from imaging gaps, speckle noise, and underused PolSAR polarization remain. This study proposes PolNet-CR and introduces the LuojiaSET-PolCR dataset, achieving superior cloud removal and high-fidelity imagery for seamless observation."
   },
   {
-    "title": "Another Work",
-    "authors": "Jiangong Xu, Collaborator C",
-    "venue": "ICML",
+    "title": "Efficient diffusion model for SAR-assisted optical remote sensing image cloud removal",
+    "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan*",
+    "venue": "The 45th International Geoscience and Remote Sensing Symposium",
+    "year": 2025,
+    "url": "file:///F:/Edge%20download/IGARSS_2025_Proceedings/55030_CFP25IGA-USB/pdfs/0001722.pdf",
+    "thumb": "assets/img/IG_P1.jpg",
+    "keywords": ["Diffusion model", "Image reconstruction", "SAR-optical fusion", "Prior feature" 
+    ],
+    "introduction": "Cloud-contaminated optical satellite image reconstruction is vital, but existing SAR-optical fusion methods struggle with high-frequency recovery. We propose SARDiff_CR, a wavelet-based cross-domain fusion Transformer with diffusion models, achieving superior results on the SEN12MS-CR dataset."
+  },
+  {
+    "title": "GCOANet: A gradient consistency constraints semi-supervised network for optical image-assisted SAR despeckling",
+    "authors": "Yang Yang, Jun Pan*, Jiangong Xu, Zhongli Fan, Zeming Geng, Junli Li ",
+    "venue": "International Journal of Applied Earth Observation and Geoinformation",
+    "year": 2025,
+    "url": "https://www.sciencedirect.com/science/article/pii/S1569843225003243",
+    "thumb": "assets/img/JAG_P1.jpg",
+    "keywords": ["Synthetic aperture radar (SAR)", "Image despeckling", "Blind spot network", "Multi-source image fusion", "Semi-supervised method"
+    ]
+    "introduction": "Synthetic Aperture Radar (SAR) enables all-weather monitoring but suffers from speckle noise that degrades image quality. This paper proposes GCOANet, a semi-supervised optical-assisted SAR despeckling network using gradient consistency constraints and conditional diffusion-generated reference images, achieving effective speckle suppression while preserving texture details in real and simulated data."
+  },
+  {
+    "title": "HDRSA-Net: Hybrid dynamic residual self-attention network for SAR-assisted optical image cloud and shadow removal",
+    "authors": "Jun Pan, Jiangong Xu, Xiaoyu Yu, Guo Ye, Mi Wang*, Yumin Chen, Jianshen Ma",
+    "venue": "ISPRS Journal of Photogrammetry and Remote Sensing",
     "year": 2024,
-    "url": "https://arxiv.org/abs/xxxx.xxxxx",
-    "thumb": "assets/img/placeholder.svg",
-    "keywords": []
+    "url": "https://www.sciencedirect.com/science/article/abs/pii/S0924271624004039",
+    "thumb": "assets/img/ISPRS_P1.jpg",
+    "keywords": ["Cloud and shadow removal", "Multimodal fusion network:, "Self-Attention", "Synthetic aperture radar (SAR)"
+    ]
+    "introduction": "Cloud and shadow contamination in optical remote sensing hinders continuous monitoring, while SAR offers complementary all-weather data but suffers from speckle noise and imaging differences. This paper proposes HDRSA-Net, a hybrid dynamic residual self-attention network with local–global adaptive feature extraction and multi-task optimization, achieving stable, high-fidelity SAR-optical reconstruction and introducing a comprehensive evaluation dataset."
+  },
+  {
+    "title": "SCT-CR: A synergistic convolution-transformer modeling method using SAR-optical data fusion for cloud removal",
+    "authors": "Jianshen Ma, Yumin Chen*, Jun Pan, Jiangong Xu, Zhanghui Li, Rui Xu, Ruoxuan Chen",
+    "venue": "International Journal of Applied Earth Observation and Geoinformation",
+    "year": 2024,
+    "url": "https://www.sciencedirect.com/science/article/pii/S1569843224002632",
+    "thumb": "assets/img/JAG_P2.jpg",
+    "keywords": ["Cloud removal", "Data fusion", "SAR", "Synergistic convolution", "Transformer"
+    ]
+    "introduction": "Traditional CNN-based SAR–optical cloud removal suffers from noise, feature mismatch, and random cloud patterns, causing blur and texture loss. This paper proposes SCT-CR, a synergistic convolution–transformer network that fuses SAR–optical features locally and captures global context, achieving superior texture recovery and stability, with significant SSIM gains on SEN12MS-CR and LuojiaSET-OSFCR datasets."
+  },
+  {
+    "title": "Missing information reconstruction integrating isophote constraint and color-structure control for remote sensing data",
+    "authors": "Xiaoyu Yu, Jun Pan*, Jiangong Xu, Mi Wang",
+    "venue": "ISPRS Journal of Photogrammetry and Remote Sensing",
+    "year": 2024,
+    "url": "https://www.sciencedirect.com/science/article/pii/S0924271624000133",
+    "thumb": "assets/img/ISPRS_P2.jpg",
+    "keywords": ["Information reconstruction", "Isophote constraint", "Color-structure control", "Remote sensing imagery"
+    ]
+    "introduction": "Remote sensing images often lose information due to sensor defects and atmospheric effects. This paper proposes an isophote-constrained reconstruction method, using adaptive weighted gradients from a reference image to preserve feature consistency and enhance inter-feature contrast, combined with color-structure-controlled pixel updates, achieving high-fidelity, color-consistent restoration even for large missing areas."
+  },
+  {
+    "title": "A curvature-driven cloud removal method for remote sensing images",
+    "authors": "Xiaoyu Yu, Jun Pan*, Mi Wang, Jiangong Xu",
+    "venue": "Geo-spatial Information Science",
+    "year": 2023,
+    "url": "https://www.tandfonline.com/doi/full/10.1080/10095020.2023.2189462",
+    "thumb": "assets/img/GSIS_P1.jpg",
+    "keywords": ["Cloud removal", "Curvature domain", "Boundary optimization", "Checkpoints refinement"
+    ]
+    "introduction": "Cloud coverage limits remote-sensing image usability. This paper proposes a curvature-driven cloud removal method, reconstructing missing areas in the curvature domain to preserve texture, optimizing boundaries for minimal curvature difference, and refining results for radiometric accuracy, achieving consistent and high-quality cloud-free imagery."
+  },
+  {
+    "title": "Detection of marine oil spills from radar satellite images for the coastal ecological risk assessment",
+    "authors": "Xiaoshuang Ma*, Jiangong Xu, Jun Pan, Jie Yang, Penghai Wu, Xiangchao Meng",
+    "venue": "Journal of Environmental Management",
+    "year": 2022,
+    "url": "https://www.sciencedirect.com/science/article/pii/S0301479722022101",
+    "thumb": "assets/img/JEM_P1.jpg",
+    "keywords": ["Ecological risk assessment", Marine oil spill detection; Synthetic aperture radar; Deep learning
+    ]
+    "introduction": "Coastal ecosystems are vital for sustainable development, making ecological risk assessment crucial. This paper proposes a framework combining deep learning-based oil spill detection from Sentinel-1 PolSAR data with environmental vulnerability analysis, using a weighted probability model to assess coastal ecological risk, demonstrated in Jiaozhou Bay where high-risk zones align with ports, shipping routes, and biodiverse areas."
+  },
+  {
+    "title": "Oil Spill Detection Based on Deep Convolutional Neural Networks Using Polarimetric Scattering Information From Sentinel-1 SAR Images",
+    "authors": "Xiaoshuang Ma*, Jiangong Xu*, Penghai Wu, Peng Kong",
+    "venue": "IEEE Transactions on Geoscience and Remote Sensing",
+    "year": 2021,
+    "url": "https://ieeexplore.ieee.org/document/9606718",
+    "thumb": "assets/img/TGRS_P1.jpg",
+    "keywords": ["Deep convolutional neural network (DCNN)", "Oil spill detection", "Polarimetric decomposition", "Polarimetric synthetic aperture radar (PolSAR) image", "Sentinel-1"
+    ]
+    "introduction": "This paper proposes a deep learning–based oil spill detection method using Sentinel-1 dual-polarimetric SAR, integrating amplitude, phase, and Cloude decomposition parameters. The improved DeepLabv3+ with ResNet-101 and group normalization outperforms traditional methods, achieving fine-scale, accurate oil spill segmentation."
+  },
+  {
+    "title": "Polarimetric SAR Speckle Filtering Using a Nonlocal Weighted LMMSE Filter",
+    "authors": "Yinbin Shen,Xiaoshuang Ma*,Shengyuan Zhu, Jiangong Xu",
+    "venue": "Sensors",
+    "year": 2021,
+    "url": "https://www.mdpi.com/1424-8220/21/21/7393#:~:text=In%20this%20paper%2C%20a%20technique%20based%20on%20a,for%20polarimetric%20synthetic%20aperture%20radar%20%28PolSAR%29%20speckle%20filtering.",
+    "thumb": "assets/img/Sensors_P1.jpg",
+    "keywords": ["polarimetric synthetic aperture radar", "Speckle filtering", "Complex Wishart distribution", "Nonlocal means"
+    ]
+    "introduction": "This paper proposes a nonlocal weighted LMMSE (NWLMMSE) filter for PolSAR despeckling, using nonlocal means to weight samples based on neighborhood similarity and preclassifying pixels to preserve point targets. Experiments on simulated and real data show effective speckle reduction while maintaining edges and scattering mechanisms."
+  },
+  {
+    "title": "Multiple Classifiers Based Semi-Supervised Polarimetric SAR Image Classification Method",
+    "authors": "Lekun Zhu, Xiaoshuang Ma*, Penghai Wu, Jiangong Xu",
+    "venue": "Sensors",
+    "year": 2021,
+    "url": "https://www.mdpi.com/1424-8220/21/9/3006#:~:text=In%20this%20paper%2C%20we%20propose%20a%20novel%20semi-supervised,learning%20technique%20with%20the%20traditional%20scattering%20trait-based%20classifiers.",
+    "thumb": "assets/img/Sensors_P2.jpg",
+    "keywords": ["Polarimetric synthetic aperture radar", "Deep learning", "Majority voting", "CV-CNN"
+    ]
+    "introduction": "This paper proposes a semi-supervised PolSAR image classification method combining scattering trait–based classifiers (Wishart, SVM) with a complex-valued CNN. Majority voting generates strong and weak datasets, with pseudo-labeling used to refine weak samples. Tests on agricultural and forest PolSAR data show 3–5% accuracy gains, especially with few labeled samples."
   }
 ]
