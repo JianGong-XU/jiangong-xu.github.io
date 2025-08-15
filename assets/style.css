@@ -190,6 +190,9 @@ h3{ font-size: 20px; }
 @media (max-width: 720px){
   .pub-item{ grid-template-columns: 1fr; }
 }
+#serviceList { padding-left: 1.25rem; }
+#serviceList .sep { opacity: .6; margin: 0 .25em; }
+
 
 
 
