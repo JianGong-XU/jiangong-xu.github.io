@@ -5,7 +5,7 @@
     "venue": "Information Fusion",
     "year": 2025,
     "url": "https://doi.org/10.1016/j.inffus.2025.103367",
-    "thumb": "assets/img/IF_P1.jpg",
+    "thumb": "assets/img/IF_P1.png",
     "keywords": [
       "Cloud removal", "Interaction learning", "Image reconstruction", "Multimodal fusion", "PolSAR"
     ],
@@ -16,7 +16,7 @@
     "authors": "Jiangong Xu, Xiaoyu Yu, Jun Pan*",
     "venue": "The 45th International Geoscience and Remote Sensing Symposium",
     "year": 2025,
-    "thumb": "assets/img/IG_P1.jpg",
+    "thumb": "assets/img/IG_P1.png",
     "keywords": [
       "Diffusion model", "Image reconstruction", "SAR-optical fusion", "Prior feature"
     ],
@@ -28,7 +28,7 @@
     "venue": "International Journal of Applied Earth Observation and Geoinformation",
     "year": 2025,
     "url": "https://www.sciencedirect.com/science/article/pii/S1569843225003243",
-    "thumb": "assets/img/JAG_P1.jpg",
+    "thumb": "assets/img/JAG_P1.png",
     "keywords": [
       "Synthetic aperture radar (SAR)", "Image despeckling", "Blind spot network", "Multi-source image fusion", "Semi-supervised method"
     ],
@@ -40,7 +40,7 @@
     "venue": "ISPRS Journal of Photogrammetry and Remote Sensing",
     "year": 2024,
     "url": "https://www.sciencedirect.com/science/article/abs/pii/S0924271624004039",
-    "thumb": "assets/img/ISPRS_P1.jpg",
+    "thumb": "assets/img/ISPRS_P1.png",
     "keywords": [
       "Cloud and shadow removal", "Multimodal fusion network", "Self-attention", "Synthetic aperture radar (SAR)"
     ],
@@ -52,7 +52,7 @@
     "venue": "International Journal of Applied Earth Observation and Geoinformation",
     "year": 2024,
     "url": "https://www.sciencedirect.com/science/article/pii/S1569843224002632",
-    "thumb": "assets/img/JAG_P2.jpg",
+    "thumb": "assets/img/JAG_P2.png",
     "keywords": [
       "Cloud removal", "Data fusion", "SAR", "Synergistic convolution", "Transformer"
     ],
@@ -64,7 +64,7 @@
     "venue": "ISPRS Journal of Photogrammetry and Remote Sensing",
     "year": 2024,
     "url": "https://www.sciencedirect.com/science/article/pii/S0924271624000133",
-    "thumb": "assets/img/ISPRS_P2.jpg",
+    "thumb": "assets/img/ISPRS_P2.png",
     "keywords": [
       "Information reconstruction", "Isophote constraint", "Color-structure control", "Remote sensing imagery"
     ],
@@ -76,7 +76,7 @@
     "venue": "Geo-spatial Information Science",
     "year": 2023,
     "url": "https://www.tandfonline.com/doi/full/10.1080/10095020.2023.2189462",
-    "thumb": "assets/img/GSIS_P1.jpg",
+    "thumb": "assets/img/GSIS_P1.png",
     "keywords": [
       "Cloud removal", "Curvature domain", "Boundary optimization", "Checkpoint refinement"
     ],
@@ -88,7 +88,7 @@
     "venue": "Journal of Environmental Management",
     "year": 2022,
     "url": "https://www.sciencedirect.com/science/article/pii/S0301479722022101",
-    "thumb": "assets/img/JEM_P1.jpg",
+    "thumb": "assets/img/JEM_P1.png",
     "keywords": [
       "Ecological risk assessment", "Marine oil spill detection", "Synthetic aperture radar", "Deep learning"
     ],
@@ -100,7 +100,7 @@
     "venue": "IEEE Transactions on Geoscience and Remote Sensing",
     "year": 2021,
     "url": "https://ieeexplore.ieee.org/document/9606718",
-    "thumb": "assets/img/TGRS_P1.jpg",
+    "thumb": "assets/img/TGRS_P1.png",
     "keywords": [
       "Deep convolutional neural network (DCNN)", "Oil spill detection", "Polarimetric decomposition", "Polarimetric SAR", "Sentinel-1"
     ],
@@ -112,7 +112,7 @@
     "venue": "Sensors",
     "year": 2021,
     "url": "https://www.mdpi.com/1424-8220/21/21/7393",
-    "thumb": "assets/img/Sensors_P1.jpg",
+    "thumb": "assets/img/SEN_P1.png",
     "keywords": [
       "Polarimetric synthetic aperture radar", "Speckle filtering", "Complex Wishart distribution", "Nonlocal means"
     ],
@@ -124,7 +124,7 @@
     "venue": "Sensors",
     "year": 2021,
     "url": "https://www.mdpi.com/1424-8220/21/9/3006",
-    "thumb": "assets/img/Sensors_P2.jpg",
+    "thumb": "assets/img/SEN_P2.png",
     "keywords": [
       "Polarimetric synthetic aperture radar", "Deep learning", "Majority voting", "CV-CNN"
     ],
