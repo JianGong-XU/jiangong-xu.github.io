@@ -1,5 +1,22 @@
 [
-  {"text":"Assistant Editor: Geo-spatial Information Science"},
-  {"text":"Member of the Organizing Committee: International Remote Sensing Image Intelligent Processing Algorithm Contest (RSIIPAC2025)"},
-  {"text":"Reviewer:", "items":["Inf. Fusion" | "ISPRS J. Photogramm. Remote Sens." | "Remote Sens. Environ." | "IEEE Trans. Geosci. Remote Sens." | "Int. J. Appl. Earth Obs. Geoinf." | "Image Vis. Comput." | "Inf. Sci." | "ISPRS Open J. Photogramm. Remote Sens." | "Remote Sens. Appl.: Soc. Environ."]}
+  {
+    "text": "Assistant Editor: Geo-spatial Information Science"
+  },
+  {
+    "text": "Member of the Organizing Committee: International Remote Sensing Image Intelligent Processing Algorithm Contest (RSIIPAC2025)"
+  },
+  {
+    "text": "Reviewer:",
+    "items": [
+      "Inf. Fusion",
+      "ISPRS J. Photogramm. Remote Sens.",
+      "Remote Sens. Environ.",
+      "IEEE Trans. Geosci. Remote Sens.",
+      "Int. J. Appl. Earth Obs. Geoinf.",
+      "Image Vis. Comput.",
+      "Inf. Sci.",
+      "ISPRS Open J. Photogramm. Remote Sens.",
+      "Remote Sens. Appl.: Soc. Environ."
+    ]
+  }
 ]
