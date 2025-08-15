@@ -167,7 +167,7 @@ buildTOC();
 
 /* ============ Data loaders (JSON) ============ */
 /* 统一 cache busting，解决数据更新不生效 */
-const V = '20250814v7'; // 与 index.html ?v= 同步即可
+const V = '20250814v8'; // 与 index.html ?v= 同步即可
 const withV = (url) => url + (url.includes('?') ? '&' : '?') + 'v=' + V;
 
 async function loadJSON(path) {
