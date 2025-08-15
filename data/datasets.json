@@ -1,13 +1,20 @@
 [
   {
-    "name": "RS-Multimodal-1K",
+    "name": "OIL_spill_Detection",
+    "year": 2021,
+    "venue": "Global",
+    "desc": "A publicly available marine oil spill detection dataset based on dual-polarization Sentinel-1 PolSAR imagery for research and monitoring.",
+    "paper": "https://ieeexplore.ieee.org/document/9606718",
+    "baidu": "https://pan.baidu.com/s/1ID4bYxWz1AtGY7qu5sWftQ?pwd=1111  提取码: 1111",
+    "gdrive": "https://drive.google.com/file/d/xxxxxxxx/view",
+  },
+  {
+    "name": "LuojiaSET-PolCR",
     "year": 2025,
-    "venue": "Demo",
-    "desc": "A sample multimodal remote sensing dataset.",
-    "home": "https://example.com",
-    "paper": "https://arxiv.org/abs/0000.00000",
-    "code": "https://github.com/JianGong-XU/rs-mm-1k",
-    "data": "https://example.com/download",
-    "thumb": "assets/img/cover.jpg"
+    "venue": "Global",
+    "desc": "Introducing PolSAR polarimetric scattering characteristics explicitly enhances the reconstruction of cloud-contaminated optical satellite images.",
+    "paper": "https://linkinghub.elsevier.com/retrieve/pii/S1566253525004403",
+    "baidu": "https://pan.baidu.com/s/16O-4eydNniwP5Opfkou6fA?pwd=1111  提取码: 1111",
+    "gdrive": "https://drive.google.com/file/d/xxxxxxxx/view",
   }
 ]
