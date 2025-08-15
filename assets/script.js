@@ -287,28 +287,33 @@ function esc(s = '') {
   }
 })();
 
-/* ============ Dataset ============ */
+/* ============ Dataset (name, year/venue, desc, paper, Baidu, GDrive) ============ */
 (async () => {
   const box = document.getElementById('datasetGrid') || document.getElementById('datasetList');
   if (!box) return;
   try {
     const data = await loadJSON('data/datasets.json');
-    box.innerHTML = data.map((d) => `
-      <article class="card">
-        ${d.thumb ? `<img src="${d.thumb}" alt="${esc(d.name)}">` : ''}
-        <h3>${esc(d.name)}</h3>
-        <p class="meta">${esc(d.year || '')} ${d.venue ? '· ' + esc(d.venue) : ''}</p>
-        <p>${esc(d.desc || '')}</p>
-        <p class="links">
-          ${[
-            d.home && `<a href="${d.home}" target="_blank" rel="noopener">Home</a>`,
-            d.paper && `<a href="${d.paper}" target="_blank" rel="noopener">Paper</a>`,
-            d.code && `<a href="${d.code}" target="_blank" rel="noopener">Code</a>`,
-            d.data && `<a href="${d.data}" target="_blank" rel="noopener">Data</a>`
-          ].filter(Boolean).join(' ')}
-        </p>
-      </article>
-    `).join('');
+
+    // 按年份降序
+    data.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+
+    box.innerHTML = data.map((d) => {
+      const meta = [d.year, d.venue].filter(Boolean).join(' · ');
+      const links = [
+        d.paper && `<a href="${d.paper}" target="_blank" rel="noopener">Paper</a>`,
+        d.baidu && `<a href="${d.baidu}" target="_blank" rel="noopener">Baidu Netdisk</a>`,
+        d.gdrive && `<a href="${d.gdrive}" target="_blank" rel="noopener">Google Drive</a>`
+      ].filter(Boolean).join(' | ');
+
+      return `
+        <article class="card">
+          <h3>${esc(d.name || '')}</h3>
+          ${meta ? `<p class="meta">${esc(meta)}</p>` : ''}
+          ${d.desc ? `<p>${esc(d.desc)}</p>` : ''}
+          ${links ? `<p class="links">${links}</p>` : ''}
+        </article>
+      `;
+    }).join('');
   } catch (e) {
     console.warn('datasets.json not found or invalid', e);
   }
