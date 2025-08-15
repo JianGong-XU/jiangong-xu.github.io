@@ -320,16 +320,18 @@ function esc(s = '') {
   if (!box) return;
   try {
     const items = await loadJSON('data/service.json');
-    // 两种写法都支持：
-    // 1) [{ "text": "Assistant Editor: ..." }, { "text": "Reviewer: ..." }]
-    // 2) [{ "text": "Reviewer:", "items": ["Inf. Fusion", "..."] }]
+    // 支持两种写法：
+    // 1) { "text": "Assistant Editor: ..." }
+    // 2) { "text": "Reviewer:", "items": ["Inf. Fusion", "..."] }  -> 用 | 拼接成一行
     box.innerHTML = items.map((s) => {
       if (Array.isArray(s.items) && s.items.length) {
-        return `<li>${esc(s.text || '')}<ul>${s.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></li>`;
+        const joined = s.items.map(esc).join(' <span class="sep">|</span> ');
+        return `<li>${esc(s.text || '')} ${joined}</li>`;
       }
-      return `<li>${esc(s.text || s)}</li>`; // 不再手写 "•"，避免双点
+      return `<li>${esc(s.text || s)}</li>`;
     }).join('');
   } catch (e) {
     console.warn('service.json not found or invalid', e);
   }
 })();
+
