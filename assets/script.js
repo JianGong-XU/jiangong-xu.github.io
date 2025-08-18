@@ -1,363 +1,311 @@
-/* ===== 基础配色与暗色主题 ===== */
-:root{
-  --bg: #0f141a;
-  --fg: #e6edf3;
-  --muted: #9aa6b2;
-  --link: #58a6ff;
-  --border: rgba(255,255,255,.12);
-  --card: rgba(255,255,255,.03);
-  --shadow: 0 10px 30px rgba(0,0,0,.25);
+/* assets/script.js
+ * JianGong XU · site scripts
+ * - Theme toggle (persisted)
+ * - Smooth anchors + Back to top
+ * - Auto TOC build + scroll spy
+ * - Award carousel (build from JSON -> init)
+ */
+(function () {
+  'use strict';
 
-  /* Award 显示上限（可按需调整） */
-  --award-maxw: 860px;  /* 轮播最大宽度（桌面） */
-  --award-maxh: 520px;  /* 单张证书的最大显示高度（桌面） */
-}
+  /* -------------------- small utils -------------------- */
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+  const ready = (fn) =>
+    document.readyState !== 'loading'
+      ? fn()
+      : document.addEventListener('DOMContentLoaded', fn);
 
-html.dark, html { background: var(--bg); color: var(--fg); }
+  /* =====================================================
+   *  THEME TOGGLE
+   * ===================================================== */
+  function initThemeToggle() {
+    const KEY = 'pref-theme';
+    const html = document.documentElement;
+    const btn = $('#themeToggle');
 
-*{ box-sizing: border-box; }
-body{ margin:0; font: 16px/1.7 system-ui, -apple-system, Segoe UI, Roboto, PingFang SC, Noto Sans CJK SC, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; }
-a{ color: var(--link); text-decoration: none; }
-a:hover{ text-decoration: underline; }
-img{ max-width: 100%; display: block; }
+    // init from storage (default: dark)
+    const saved = localStorage.getItem(KEY);
+    if (saved === 'light') html.classList.remove('dark');
+    else html.classList.add('dark');
 
-/* ===== 容器与通用 ===== */
-.container{ max-width: 1100px; margin: 0 auto; padding: 0 16px; }
-.muted{ color: var(--muted); }
-.small{ font-size: .9rem; }
-.lead{ font-size: 1.08rem; }
+    if (btn) {
+      btn.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        const isDark = html.classList.contains('dark');
+        localStorage.setItem(KEY, isDark ? 'dark' : 'light');
+      });
+    }
+  }
 
-/* ===== 顶部导航 ===== */
-.site-header{
-  position: sticky; top: 0; z-index: 20;
-  background: rgba(15,20,26,.85); backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
-}
-.nav{ display:flex; align-items:center; justify-content:space-between; height:56px; gap:16px; }
-.brand{ display:flex; align-items:center; gap:10px; }
-.brand-title{ font-weight:700; letter-spacing:.2px; }
-.theme-toggle{ border:1px solid var(--border); background:transparent; color:var(--fg); border-radius:10px; padding:4px 10px; cursor:pointer; }
-.top-nav{ display:flex; align-items:center; gap:18px; }
-.top-nav a{ color:var(--fg); opacity:.9; }
-.top-nav a:hover{ opacity:1; }
-.lang{ border:1px solid var(--border); background:transparent; color:var(--fg); border-radius:8px; padding:4px 8px; }
+  /* =====================================================
+   *  SMOOTH ANCHORS + BACK TO TOP
+   * ===================================================== */
+  function initSmoothAnchors() {
+    const headerH = 64; // approximate sticky header height
 
-/* 顶部/章节图标尺寸（与文字基线更贴合） */
-.nav-ic{ width:18px; height:18px; vertical-align:-3px; }
-.sec-ic{ width:22px; height:22px; vertical-align:-3px; }
+    function to(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY - headerH;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
 
-/* ===== 左侧 TOC ===== */
-.toc{
-  position: fixed; top: 82px; left: 16px; width: 210px;
-  border:1px solid var(--border); border-radius:16px; padding:12px; background:var(--card);
-  display:flex; flex-direction:column; gap:10px;
-}
-.toc a{ color:var(--fg); opacity:.85; }
-.toc a.active{ color: var(--link); font-weight:600; }
-@media (max-width: 1200px){ .toc{ display:none; } }
+    // top nav + toc anchors
+    $$('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href') || '';
+        const id = href.slice(1);
+        if (!id) return;
+        if (document.getElementById(id)) {
+          e.preventDefault();
+          to(id);
+          history.replaceState(null, '', `#${id}`);
+        }
+      });
+    });
 
-/* ===== 区块通用 ===== */
-.section{ padding: 48px 0; }
-.section.alt{ background: rgba(255,255,255,.02); }
-h1,h2,h3{ margin: 0 0 14px; }
-h1{ font-size: 34px; }
-h2{ font-size: 26px; }
-h3{ font-size: 20px; }
+    // back-to-top
+    const back = $('#backTop');
+    const onScroll = () => {
+      if (!back) return;
+      back.style.display = window.scrollY > 400 ? 'flex' : 'none';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    back && back.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    onScroll();
+  }
 
-/* ===== Hero 两栏布局 ===== */
-.hero{ padding: 48px 0 12px; }
-.hero-grid{
-  display:grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: center;
-}
-@media (max-width: 860px){
-  .hero-grid{ grid-template-columns:1fr; gap:20px; }
-}
+  /* =====================================================
+   *  AUTO TOC + SCROLL SPY
+   * ===================================================== */
+  function initTOC() {
+    const wrap = $('#toc');
+    if (!wrap) return;
 
-/* 头像卡片 */
-.avatar{
-  justify-self: end;
-  background: var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:12px;
-  box-shadow: var(--shadow);
-}
-.avatar img{ width:320px; height:auto; border-radius:14px; object-fit:cover; }
-@media (max-width: 860px){
-  .avatar{ justify-self:center; }
-  .avatar img{ width: min(70vw, 360px); }
-}
+    const sections = [
+      { id: 'top', title: 'top' },
+      ...$$('.section').map((sec) => {
+        const h2 = $('h2', sec);
+        return { id: sec.id, title: h2 ? h2.textContent.trim() : sec.id };
+      }),
+    ].filter((x) => x.id);
 
-/* ===== 社交按钮 chips ===== */
-.chips {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
+    // render
+    wrap.innerHTML = sections
+      .map((s) => `<a href="#${s.id}" data-id="${s.id}">${s.title}</a>`)
+      .join('');
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: transparent;
-  text-decoration: none;
-  color: var(--fg);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-}
+    // spy
+    const tocLinks = $$('a', wrap);
+    const linkById = Object.fromEntries(tocLinks.map((a) => [a.dataset.id, a]));
+    const headerH = 70;
 
-.chip:hover {
-  box-shadow: var(--shadow);
-  transform: translateY(-1px);
-  opacity: 1;
-}
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          const id = en.target.id;
+          if (!id || !linkById[id]) return;
+          if (en.isIntersecting) {
+            tocLinks.forEach((x) => x.classList.remove('active'));
+            linkById[id].classList.add('active');
+          }
+        });
+      },
+      { rootMargin: `-${headerH}px 0px -70% 0px`, threshold: 0.01 }
+    );
 
-/* 统一图标样式（Font Awesome / SVG） */
-.icon {
-  width: 18px;
-  height: 18px;
-  font-size: 1.05em;     /* 兼容 font 图标 */
-  fill: currentColor;    /* SVG 图标生效 */
-  color: currentColor;   /* 字体图标生效 */
-  line-height: 1;
-  flex-shrink: 0;        /* 图标不被压缩 */
-  vertical-align: -2px;
-}
+    sections.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) io.observe(el);
+    });
+  }
 
-/* 覆盖品牌色，保持单色（兼容可能出现的 RG 字体图标） */
-.ai-researchgate,
-.fa-researchgate {
-  color: currentColor !important;
-  background: transparent !important;
-}
+  /* =====================================================
+   *  AWARD CAROUSEL (JSON-DRIVEN)
+   *  HTML placeholder:
+   *  <div class="carousel" data-autoplay="5000" data-src="data/award.json"></div>
+   * ===================================================== */
 
-/* ===== 列表与卡片 ===== */
-.grid{
-  display:grid; grid-template-columns: repeat( auto-fill, minmax(260px, 1fr) );
-  gap:16px; margin-top:8px;
-}
-.card{
-  border:1px solid var(--border); border-radius:16px; padding:12px; background:var(--card);
-}
-.card img{ border-radius:12px; margin-bottom:10px; }
+  function buildCarouselShell(wrap) {
+    wrap.innerHTML = `
+      <button class="carousel-btn prev" aria-label="Previous">‹</button>
+      <div class="carousel-viewport"><ul class="carousel-track"></ul></div>
+      <button class="carousel-btn next" aria-label="Next">›</button>
+      <div class="carousel-dots" aria-label="Slides"></div>
+    `;
+    return {
+      track: $('.carousel-track', wrap),
+      dots: $('.carousel-dots', wrap),
+      prev: $('.prev', wrap),
+      next: $('.next', wrap),
+    };
+  }
 
-.pubs .year{ margin-top:18px; font-weight:700; }
-.pubs .pub{ padding:10px 0; border-bottom:1px dashed var(--border); }
-.pubs .pub:last-child{ border-bottom:none; }
-.pubs .meta{ color:var(--muted); font-size:.95rem; }
+  function renderAwardSlides(track, items) {
+    const frag = document.createDocumentFragment();
+    items.forEach((it) => {
+      const li = document.createElement('li');
+      li.className = 'carousel-slide';
 
-.news{ margin:0; padding-left:20px; }
-.news li{ margin:6px 0; }
-.news .date{ color:var(--muted); margin-right:6px; }
+      const fig = document.createElement('figure');
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = it.src;
+      img.alt = it.alt || it.caption || 'award';
 
-/* ===== 页脚 ===== */
-.footer{
-  border-top:1px solid var(--border); padding:20px 0; margin-top:40px;
-  background: rgba(255,255,255,.02);
-}
+      if (it.href) {
+        const a = document.createElement('a');
+        a.href = it.href;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.appendChild(img);
+        fig.appendChild(a);
+      } else {
+        fig.appendChild(img);
+      }
 
-/* ===== 返回顶部按钮 ===== */
-.backtop{
-  position:fixed; right:20px; bottom:24px;
-  width:40px; height:40px; border-radius:50%;
-  border:1px solid var(--border); background:var(--card); color:var(--fg);
-  display:none; align-items:center; justify-content:center; cursor:pointer;
-  box-shadow: var(--shadow);
-}
+      if (it.caption) {
+        const cap = document.createElement('figcaption');
+        cap.textContent = it.caption;
+        fig.appendChild(cap);
+      }
 
-/* Academic Service 列表缩进 */
-#service ul { padding-left: 20px; }
+      li.appendChild(fig);
+      frag.appendChild(li);
+    });
+    track.appendChild(frag);
+  }
 
-/* ===== TP-style Publications (left-thumb, right-content) ===== */
-.tp-list { display: flex; flex-direction: column; gap: 18px; }
+  function initCarousel(wrap) {
+    const track = $('.carousel-track', wrap);
+    const slides = $$('.carousel-slide', wrap);
+    const prev = $('.prev', wrap);
+    const next = $('.next', wrap);
+    const dotsWrap = $('.carousel-dots', wrap);
+    const autoplayMs = parseInt(wrap.dataset.autoplay || '0', 10);
 
-.pub-item{
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 16px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  border-radius: 14px;
-  padding: 12px;
-}
+    if (!slides.length) return;
 
-.pub-item .thumb{
-  align-self: start;
-  border: 1px solid var(--border);
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-}
-.pub-item .thumb img{ width: 100%; height: auto; display:block; }
+    // dots
+    dotsWrap.innerHTML = '';
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      b.addEventListener('click', () => go(i));
+      dotsWrap.appendChild(b);
+    });
 
-.pub-item .content{ display:flex; flex-direction:column; gap:8px; }
+    let index = 0,
+      timer = null,
+      isDragging = false,
+      startX = 0,
+      currentX = 0;
 
-.pub-item .badge{
-  display:inline-block;
-  border:1px solid var(--border);
-  background: rgba(88,166,255,.09);
-  color: var(--fg);
-  border-radius: 6px;
-  padding: 2px 8px;
-  font-size: .9rem;
-}
+    function update() {
+      track.style.transform = `translateX(${-index * 100}%)`;
+      $$('.carousel-dots button', wrap).forEach((b, i) =>
+        b.setAttribute('aria-current', i === index ? 'true' : 'false')
+      );
+    }
+    function go(i) {
+      index = (i + slides.length) % slides.length;
+      update();
+      restart();
+    }
+    function nextSlide() {
+      go(index + 1);
+    }
+    function prevSlide() {
+      go(index - 1);
+    }
 
-.pub-item h3{
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.4;
-}
-.pub-item h3 a{ color: var(--link); text-decoration: none; }
-.pub-item h3 a:hover{ text-decoration: underline; }
+    prev && prev.addEventListener('click', prevSlide);
+    next && next.addEventListener('click', nextSlide);
 
-.pub-item .authors{ margin:0; color: var(--fg); font-size:.98rem; }
-.pub-item .authors b{ font-weight: 700; }
+    function restart() {
+      if (!autoplayMs) return;
+      clearInterval(timer);
+      timer = setInterval(nextSlide, autoplayMs);
+    }
 
-.pub-item .links{ margin: 2px 0 0; }
-.pub-item .links a{ margin-right: 12px; }
+    function onDown(e) {
+      isDragging = true;
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+      currentX = startX;
+      track.style.transition = 'none';
+      clearInterval(timer);
+    }
+    function onMove(e) {
+      if (!isDragging) return;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const dx = x - startX;
+      currentX = x;
+      track.style.transform = `translateX(${dx / wrap.clientWidth * 100 - index * 100}%)`;
+    }
+    function onUp() {
+      if (!isDragging) return;
+      const dx = currentX - startX;
+      track.style.transition = '';
+      if (Math.abs(dx) > wrap.clientWidth * 0.2) {
+        dx < 0 ? nextSlide() : prevSlide();
+      } else {
+        update();
+        restart();
+      }
+      isDragging = false;
+    }
 
-.pub-item .kw{ display:flex; flex-wrap:wrap; gap:6px; margin-top: 2px; }
-.pub-item .kw .tag{
-  font-size: .85rem;
-  border:1px solid var(--border);
-  border-radius: 999px;
-  padding: 2px 8px;
-  background: transparent;
-  color: var(--muted);
-}
+    wrap.addEventListener('mousedown', onDown);
+    wrap.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    wrap.addEventListener('touchstart', onDown, { passive: true });
+    wrap.addEventListener('touchmove', onMove, { passive: true });
+    wrap.addEventListener('touchend', onUp);
 
-/* small screens */
-@media (max-width: 720px){
-  .pub-item{ grid-template-columns: 1fr; }
-}
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
 
-#serviceList { padding-left: 1.25rem; }
-#serviceList .sep { opacity: .6; margin: 0 .25em; }
+    update();
+    restart();
+  }
 
-/* ========== 通用 Carousel ========== */
-.carousel {
-  position: relative;
-  margin-top: 16px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.02);
-}
-.carousel-viewport { overflow: hidden; }
-.carousel-track {
-  display: flex;
-  transition: transform .4s ease;
-  will-change: transform;
-}
-.carousel-slide {
-  min-width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-}
-.carousel-slide figure { margin: 0; }
-.carousel-slide img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-}
-.carousel-slide figcaption {
-  margin-top: 10px;
-  font-size: 0.95rem;
-  color: var(--muted, #9aa4ad);
-}
+  async function buildAwardCarouselsFromJSON() {
+    const wraps = $$('#award .carousel[data-src]');
+    if (!wraps.length) return;
 
-/* buttons */
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px; height: 36px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(0,0,0,.25);
-  color: #fff;
-  display: grid; place-items: center;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-}
-.carousel-btn:hover { background: rgba(0,0,0,.35); }
-.carousel-btn.prev { left: 12px; }
-.carousel-btn.next { right: 12px; }
+    await Promise.all(
+      wraps.map(async (wrap) => {
+        const base = wrap.getAttribute('data-src');
+        // cache-bust for GitHub Pages
+        const url = base + (base.includes('?') ? '&' : '?') + 't=' + Date.now();
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const json = await res.json();
+          const items = (json && (json.awards || json)) || [];
+          if (!items.length) throw new Error('Empty awards data');
 
-/* dots */
-.carousel-dots {
-  position: absolute;
-  left: 0; right: 0; bottom: 10px;
-  display: flex; gap: 8px; justify-content: center;
-}
-.carousel-dots button {
-  width: 8px; height: 8px; border-radius: 50%;
-  border: 0; background: rgba(255,255,255,.35);
-  cursor: pointer;
-}
-.carousel-dots button[aria-current="true"] { background: #fff; }
+          const { track } = buildCarouselShell(wrap);
+          renderAwardSlides(track, items);
+          initCarousel(wrap);
+        } catch (e) {
+          console.error('[award] failed to load:', url, e);
+          wrap.innerHTML = '<p class="muted small">No awards to display.</p>';
+        }
+      })
+    );
+  }
 
-/* 小屏优化：隐藏左右按钮，用滑动/圆点 */
-@media (max-width: 640px) {
-  .carousel-btn { display: none; }
-}
-
-/* ===== Award 证书图 统一缩放（不改比例） ===== */
-
-/* 中小屏微调上限，保证不占满整屏 */
-@media (max-width: 1024px){
-  :root{ --award-maxw: 680px; --award-maxh: 440px; }
-}
-@media (max-width: 640px){
-  :root{ --award-maxw: 100%; --award-maxh: 360px; }
-}
-
-/* 居中并限制整体宽度 */
-#award .carousel{
-  max-width: var(--award-maxw);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* 居中对齐每张幻灯片内容 */
-#award .carousel-slide{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  box-sizing: border-box;
-}
-
-/* figure 居中 */
-#award .carousel-slide figure{
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-/* 证书图：保持比例，按最大宽/高等比缩放，大小不一也能统一 */
-#award .carousel-slide img{
-  max-width: 100%;                /* 不超过容器宽 */
-  max-height: var(--award-maxh);  /* 不超过设定的高度上限 */
-  width: auto;
-  height: auto;
-  object-fit: contain;            /* 宽高比各不相同也不裁切 */
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  background: rgba(255,255,255,0.02);
-}
-
-/* 说明文字居中、低调一点 */
-#award .carousel-slide figcaption{
-  margin-top: 10px;
-  font-size: 0.95rem;
-  color: var(--muted, #9aa4ad);
-  text-align: center;
-}
+  /* -------------------- boot -------------------- */
+  ready(() => {
+    initThemeToggle();
+    initSmoothAnchors();
+    initTOC();
+    buildAwardCarouselsFromJSON();
+  });
+})();
