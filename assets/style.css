@@ -430,3 +430,72 @@ h3{ font-size: 20px; }
 #award .carousel-slide figcaption{
   font-size: .85rem;
 }
+/* ===================== Award 横排 strip 模式 ===================== */
+/* 在 #award 下的 carousel 默认启用“横排一行”视觉：统一高 240px，宽度自适应 */
+#award .carousel {
+  max-width: 100%;
+}
+
+/* 视口横向滚动 + 对齐更顺手 */
+#award .carousel-viewport{
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x proximity;
+  padding: 8px 0;
+}
+
+/* 轨道横排，元素之间留白 */
+#award .carousel-track{
+  display: flex;
+  gap: 14px;
+  /* strip 模式不做 translateX；若 JS 不小心设了，也不让生效 */
+  transform: none !important;
+}
+
+/* 每张图作为一个“块”，不压缩，不换行 */
+#award .carousel-slide{
+  flex: 0 0 auto;
+  min-width: max-content;
+  scroll-snap-align: start;
+  padding: 4px 6px;
+  box-sizing: border-box;
+}
+
+/* 图片统一高 240px，按比例自适应宽度 */
+#award .carousel-slide img{
+  height: 240px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+  box-shadow: var(--shadow);
+}
+
+/* 说明文字小一号，居中 */
+#award .carousel-slide figcaption{
+  margin-top: 6px;
+  font-size: .85rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* 圆点在 strip 模式里没必要，按钮做“滚动”且更小巧 */
+#award .carousel-dots{ display: none; }
+
+#award .carousel-btn{
+  width: 26px; height: 26px;
+  line-height: 1;
+  border-radius: 999px;
+  top: calc(50% - 20px);
+  background: rgba(0,0,0,.35);
+}
+#award .carousel-btn.prev{ left: 8px; }
+#award .carousel-btn.next{ right: 8px; }
+#award .carousel-btn:hover{ background: rgba(0,0,0,.45); }
+
+/* 小屏：让按钮更小些，避免遮挡 */
+@media (max-width: 640px){
+  #award .carousel-btn{ width: 22px; height: 22px; }
+}
+
