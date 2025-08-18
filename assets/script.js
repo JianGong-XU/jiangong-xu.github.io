@@ -34,6 +34,15 @@
     }
   }
 
+  // 顺序尝试多个 URL，返回第一个成功解析的 JSON
+  async function fetchJSONFirst(urls) {
+    for (const u of urls) {
+      const data = await fetchJSON(u);
+      if (data) return data;
+    }
+    return null;
+  }
+
   function ensureArray(data, key) {
     if (!data) return [];
     if (Array.isArray(data)) return data;
@@ -153,13 +162,14 @@
   }
 
   /* =====================================================
-   *  PUBLICATIONS: data/pubs.json -> #pubList
-   *  兼容字段：title, authors(array|string), venue/journal, year, thumb, badge, links{pdf,code,project,doi,...}, tags[]
+   *  PUBLICATIONS -> #pubList
+   *  兼容：默认读 data/publications.json（回退 data/pubs.json）
+   *       url 作为主链接；keywords 作为 tags；authors 支持字符串或数组；支持 introduction 摘要
    * ===================================================== */
   function authorsToHTML(a) {
     if (!a) return '';
     if (Array.isArray(a)) return a.map(x => (x.bold ? `<b>${x.name||x}</b>` : x.name||x)).join(', ');
-    return String(a);
+    return String(a); // 字符串直接输出
   }
   function linksToHTML(links) {
     if (!links) return '';
@@ -177,25 +187,33 @@
   async function loadPubs() {
     const box = $('#pubList');
     if (!box) return;
-    const src = box.getAttribute('data-src') || 'data/pubs.json';
-    const data = await fetchJSON(src);
-    const items = ensureArray(data, 'pubs');
+
+    const explicit = box.getAttribute('data-src');
+    const data = explicit
+      ? await fetchJSON(explicit)
+      : await fetchJSONFirst(['data/publications.json', 'data/pubs.json']);
+
+    const items = ensureArray(data, 'pubs'); // 支持 数组 / {pubs:[...]}
     if (!items.length) { box.innerHTML = ''; return; }
+
     box.innerHTML = items
       .map((p) => {
-        const thumb = p.thumb ? `
-          <div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication') + ' thumbnail'}"></div>` : '';
+        const mainLink = p.link || p.url || (p.links && (p.links.doi || p.links.pdf || p.links.project)) || '';
+        const tags = p.tags || p.keywords || [];
+        const thumb = p.thumb ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication') + ' thumbnail'}"></div>` : '';
         const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
         const venue = p.venue || p.journal || '';
         const year = p.year ? `<span class="sep">·</span>${p.year}` : '';
         const meta = venue ? `<div class="meta">${venue}${year}</div>` : '';
         const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
-        const title = p.link
-          ? `<h3><a href="${p.link}" target="_blank" rel="noopener">${p.title||''}</a></h3>`
+        const title = mainLink
+          ? `<h3><a href="${mainLink}" target="_blank" rel="noopener">${p.title||''}</a></h3>`
           : `<h3>${p.title||''}</h3>`;
-        const links = p.links ? `<div class="links">${linksToHTML(p.links)}</div>` : '';
-        const tags = Array.isArray(p.tags) && p.tags.length
-          ? `<div class="kw">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
+        const extraLinks = p.links ? `<div class="links">${linksToHTML(p.links)}</div>` : '';
+        const summary = p.introduction ? `<p class="small muted">${p.introduction}</p>` : '';
+        const tagsHTML = Array.isArray(tags) && tags.length
+          ? `<div class="kw">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
+
         return `
           <article class="pub-item">
             ${thumb}
@@ -204,8 +222,9 @@
               ${title}
               ${authors}
               ${meta}
-              ${links}
-              ${tags}
+              ${extraLinks}
+              ${summary}
+              ${tagsHTML}
             </div>
           </article>`;
       })
@@ -238,23 +257,45 @@
   }
 
   /* =====================================================
-   *  DATASET: data/dataset.json -> #datasetGrid
-   *  兼容字段：title, thumb, href/link, desc
+   *  DATASET -> #datasetGrid
+   *  兼容：默认读 data/datasets.json（回退 data/dataset.json）
+   *       name→title；paper/gdrive/baidu/href/link 作为主链接；显示 venue/year/desc；附带多链接
    * ===================================================== */
   async function loadDataset() {
     const grid = $('#datasetGrid');
     if (!grid) return;
-    const src = grid.getAttribute('data-src') || 'data/dataset.json';
-    const data = await fetchJSON(src);
-    const items = ensureArray(data, 'datasets');
+
+    const explicit = grid.getAttribute('data-src');
+    const data = explicit
+      ? await fetchJSON(explicit)
+      : await fetchJSONFirst(['data/datasets.json', 'data/dataset.json']);
+
+    const items = ensureArray(data, 'datasets'); // 支持 数组 / {datasets:[...]}
     if (!items.length) { grid.innerHTML = ''; return; }
+
+    function datasetLinksHTML(d) {
+      const links = [];
+      if (d.paper)  links.push(`<a href="${d.paper}" target="_blank" rel="noopener">Paper</a>`);
+      if (d.gdrive) links.push(`<a href="${d.gdrive}" target="_blank" rel="noopener">Google Drive</a>`);
+      if (d.baidu)  links.push(`<a href="${d.baidu}" target="_blank" rel="noopener">Baidu</a>`);
+      return links.length ? `<div class="links">${links.join(' ')}</div>` : '';
+    }
+
     grid.innerHTML = items.map(d => {
-      const img = d.thumb ? `<img src="${d.thumb}" alt="${(d.title||'dataset') + ' cover'}">` : '';
-      const title = d.href || d.link
-        ? `<a href="${d.href||d.link}" target="_blank" rel="noopener">${d.title||''}</a>`
-        : (d.title || '');
+      const titleText = d.title || d.name || 'Dataset';
+      const href = d.href || d.link || d.paper || d.gdrive || d.baidu || '';
+      const img  = d.thumb ? `<img src="${d.thumb}" alt="${titleText} cover">` : '';
+      const metaParts = [];
+      if (d.venue) metaParts.push(d.venue);
+      if (d.year)  metaParts.push(d.year);
+      const meta = metaParts.length ? `<div class="meta small muted">${metaParts.join(' · ')}</div>` : '';
       const desc = d.desc ? `<p class="small muted">${d.desc}</p>` : '';
-      return `<div class="card">${img}<h3>${title}</h3>${desc}</div>`;
+      const titleHTML = href
+        ? `<a href="${href}" target="_blank" rel="noopener">${titleText}</a>`
+        : titleText;
+      const extra = datasetLinksHTML(d);
+
+      return `<div class="card">${img}<h3>${titleHTML}</h3>${meta}${desc}${extra}</div>`;
     }).join('');
   }
 
