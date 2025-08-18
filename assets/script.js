@@ -4,7 +4,9 @@
  * - Smooth anchors + Back to top
  * - Auto TOC build + scroll spy
  * - Load & render: News / Publications / Service / Dataset (from /data/*.json)
- * - Award carousel: build from JSON -> init (buttons, dots, swipe, autoplay)
+ * - Award carousel:
+ *    • Default: 单页轮播
+ *    • 在 #award 区域内：横排 strip 模式（统一高 240px，宽自适应；按钮=滚动）
  */
 (function () {
   'use strict';
@@ -34,7 +36,6 @@
     }
   }
 
-  // 顺序尝试多个 URL，返回第一个成功解析的 JSON
   async function fetchJSONFirst(urls) {
     for (const u of urls) {
       const data = await fetchJSON(u);
@@ -139,7 +140,7 @@
   }
 
   /* =====================================================
-   *  NEWS: data/news.json -> #newsList
+   *  NEWS
    * ===================================================== */
   async function loadNews() {
     const list = $('#newsList');
@@ -153,7 +154,7 @@
         const date = n.date || n.time || '';
         const text = n.text || n.title || n.desc || '';
         const link = n.link || n.href;
-        const html = n.html; // 支持直接传入一整段 HTML
+        const html = n.html;
         if (html) return `<li>${html}</li>`;
         const body = link ? `<a href="${link}" target="_blank" rel="noopener">${text}</a>` : text;
         return `<li><span class="date">${date}</span>${body}</li>`;
@@ -161,28 +162,8 @@
       .join('');
   }
 
-  /* ========= Reusable helpers for pubs & datasets ========= */
-  function authorsToHTML(a) {
-    if (!a) return '';
-    if (Array.isArray(a)) return a.map(x => (x.bold ? `<b>${x.name||x}</b>` : x.name||x)).join(', ');
-    return String(a);
-  }
-  function linksToHTML(links) {
-    if (!links) return '';
-    const out = [];
-    const map = {
-      pdf: 'PDF', arxiv: 'arXiv', doi: 'DOI', code: 'Code', data: 'Data',
-      project: 'Project', video: 'Video', slides: 'Slides', poster: 'Poster', bibtex: 'BibTeX'
-    };
-    Object.keys(map).forEach(k => { if (links[k]) out.push(`<a href="${links[k]}" target="_blank" rel="noopener">${map[k]}</a>`); });
-    return out.join(' ');
-  }
-
   /* =====================================================
-   *  PUBLICATIONS -> #pubList
-   *  - 读取 data/publications.json（回退 data/pubs.json）
-   *  - Venue·Year 胶囊放在标题上方（第一行）
-   *  - keywords 在 introduction 上方
+   *  PUBLICATIONS
    * ===================================================== */
   async function loadPubs() {
     const box = document.querySelector('#pubList');
@@ -196,31 +177,39 @@
     const items = ensureArray(data, 'pubs');
     if (!items.length) { box.innerHTML = ''; return; }
 
+    function authorsToHTML(a) {
+      if (!a) return '';
+      if (Array.isArray(a)) return a.map(x => (x.bold ? `<b>${x.name||x}</b>` : x.name||x)).join(', ');
+      return String(a);
+    }
+    function linksToHTML(links) {
+      if (!links) return '';
+      const out = [];
+      const map = {
+        pdf: 'PDF', arxiv: 'arXiv', doi: 'DOI', code: 'Code', data: 'Data',
+        project: 'Project', video: 'Video', slides: 'Slides', poster: 'Poster', bibtex: 'BibTeX'
+      };
+      Object.keys(map).forEach(k => { if (links[k]) out.push(`<a href="${links[k]}" target="_blank" rel="noopener">${map[k]}</a>`); });
+      return out.join(' ');
+    }
+
     box.innerHTML = items.map(p => {
       const mainLink = p.link || p.url || (p.links && (p.links.doi || p.links.pdf || p.links.project)) || '';
       const tags     = p.tags || p.keywords || [];
-
       const thumb = p.thumb
-        ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication')} thumbnail"></div>`
+        ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication') + ' thumbnail'}"></div>`
         : '';
-
       const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
-
-      // 胶囊：Venue · Year（放在标题之上）
       const venue = p.venue || p.journal || '';
-      const yearPart = p.year ? `<span class="sep">·</span>${p.year}` : '';
+      const year  = p.year ? `<span class="sep">·</span>${p.year}` : '';
       const metaTop = (venue || p.year)
-        ? `<div class="meta-top"><span class="meta-pill">${venue || ''}${yearPart}</span></div>`
+        ? `<div class="meta-top"><span class="meta-pill">${venue || ''}${year}</span></div>`
         : '';
-
+      const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
       const title = mainLink
         ? `<h3><a href="${mainLink}" target="_blank" rel="noopener">${p.title||''}</a></h3>`
         : `<h3>${p.title||''}</h3>`;
-
-      const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
       const extraLinks = p.links ? `<div class="links">${linksToHTML(p.links)}</div>` : '';
-
-      // 顺序：keywords 在上，introduction 在下
       const tagsHTML = Array.isArray(tags) && tags.length
         ? `<div class="kw">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
       const summary = p.introduction ? `<p class="small muted">${p.introduction}</p>` : '';
@@ -230,8 +219,8 @@
           ${thumb}
           <div class="content">
             ${badge}
-            ${metaTop}    <!-- 第一行：胶囊 -->
-            ${title}      <!-- 第二行：标题 -->
+            ${metaTop}
+            ${title}
             ${authors}
             ${extraLinks}
             ${tagsHTML}
@@ -242,8 +231,7 @@
   }
 
   /* =====================================================
-   *  SERVICE: data/service.json -> #serviceList
-   *  兼容：数组字符串 / {year, items[]} 分组
+   *  SERVICE
    * ===================================================== */
   async function loadService() {
     const list = $('#serviceList');
@@ -266,9 +254,7 @@
   }
 
   /* =====================================================
-   *  DATASET -> #datasetGrid
-   *  - 读取 data/datasets.json（回退 data/dataset.json）
-   *  - name→title；paper/gdrive/baidu/href/link 作为主链接；显示 venue/year/desc；附带多链接
+   *  DATASET
    * ===================================================== */
   async function loadDataset() {
     const grid = $('#datasetGrid');
@@ -309,8 +295,12 @@
   }
 
   /* =====================================================
-   *  AWARD CAROUSEL (JSON-DRIVEN)
+   *  AWARD CAROUSEL
+   *  - #award 区域内自动启用“横排 strip”模式：
+   *      · 所有图片统一高 240px（宽自适应）
+   *      · 视口横向滚动（按钮=滚动 80% 视口宽）
    * ===================================================== */
+
   function buildCarouselShell(wrap) {
     wrap.innerHTML = `
       <button class="carousel-btn prev" aria-label="Previous">‹</button>
@@ -319,6 +309,7 @@
       <div class="carousel-dots" aria-label="Slides"></div>
     `;
     return {
+      viewport: $('.carousel-viewport', wrap),
       track: $('.carousel-track', wrap),
       dots: $('.carousel-dots', wrap),
       prev: $('.prev', wrap),
@@ -361,6 +352,14 @@
   }
 
   function initCarousel(wrap) {
+    const { viewport } = {
+      viewport: $('.carousel-viewport', wrap),
+      track: $('.carousel-track', wrap)
+    };
+
+    // 在 #award 内默认启用 strip 横排模式；若 data-view 指定，也以 data-view 为准
+    const mode = wrap.dataset.view || (wrap.closest('#award') ? 'row' : 'single');
+
     const track = $('.carousel-track', wrap);
     const slides = $$('.carousel-slide', wrap);
     const prev = $('.prev', wrap);
@@ -370,6 +369,22 @@
 
     if (!slides.length) return;
 
+    // --------- strip 横排模式 ---------
+    if (mode === 'row') {
+      // 横排模式下：使用原生滚动，不做 translateX；隐藏圆点
+      dotsWrap.style.display = 'none';
+
+      // 左右按钮 => 横向滚动
+      const scrollBy = (dir) => {
+        const dx = viewport.clientWidth * 0.8 * dir;
+        viewport.scrollBy({ left: dx, behavior: 'smooth' });
+      };
+      prev.addEventListener('click', () => scrollBy(-1));
+      next.addEventListener('click', () => scrollBy(1));
+      return; // 不进入单页轮播逻辑
+    }
+
+    // --------- 单页轮播（默认）---------
     dotsWrap.innerHTML = '';
     slides.forEach((_, i) => {
       const b = document.createElement('button');
@@ -441,7 +456,7 @@
   }
 
   async function buildAwardCarouselsFromJSON() {
-    const wraps = $$('#award .carousel[data-src]');
+    const wraps = $$('#award .carousel[data-src], .section .carousel[data-src]');
     if (!wraps.length) return;
     await Promise.all(
       wraps.map(async (wrap) => {
@@ -469,13 +484,11 @@
     initTOC();
     initYear();
 
-    // 数据驱动区块
     loadNews();
     loadPubs();
     loadService();
     loadDataset();
 
-    // Award 轮播
     buildAwardCarouselsFromJSON();
   });
 })();
