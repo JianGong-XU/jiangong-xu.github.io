@@ -81,14 +81,49 @@ h3{ font-size: 20px; }
 }
 
 /* 社交按钮 chips */
-.chips{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-.chip{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:6px 12px; border:1px solid var(--border);
-  border-radius:999px; background:transparent; text-decoration:none; color:var(--fg);
+.chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
 }
-.chip:hover{ box-shadow: var(--shadow); }
-.icon{ width:16px; height:16px; fill: currentColor; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  text-decoration: none;
+  color: var(--fg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.chip:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+/* 统一图标样式（Font Awesome / Academicons / SVG） */
+.icon {
+  width: 18px;
+  height: 18px;
+  font-size: 1.05em;       /* 兼容 font 图标 */
+  fill: currentColor;      /* SVG 图标生效 */
+  color: currentColor;     /* 字体图标生效 */
+  line-height: 1;
+  flex-shrink: 0;          /* 保证图标不被压缩 */
+}
+
+/* 覆盖品牌色，保持单色 */
+.ai-researchgate,
+.fa-researchgate {
+  color: currentColor !important;
+  background: transparent !important;
+}
 
 /* ===== 列表与卡片 ===== */
 .grid{
