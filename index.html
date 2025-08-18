@@ -236,58 +236,8 @@
         Award
       </h2>
   
-      <!-- 轮播组件（可放多张证书） -->
-      <div class="carousel" data-autoplay="5000">
-        <button class="carousel-btn prev" aria-label="Previous">‹</button>
-        <div class="carousel-viewport">
-          <ul class="carousel-track">
-            <!-- 1 -->
-            <li class="carousel-slide">
-              <figure>
-                <img src="assets/img/awards/2024PIERS-best.png" alt="XXX Award 2024 - First Prize">
-                <figcaption>XXX Award 2024 · First Prize</figcaption>
-              </figure>
-            </li>
-            <!-- 2 -->
-            <li class="carousel-slide">
-              <figure>
-                <img src="assets/img/awards/AHU_1.png" alt="YYY Scholarship 2023">
-                <figcaption>YYY Scholarship 2023</figcaption>
-              </figure>
-            </li>
-            <!-- 3 -->
-            <li class="carousel-slide">
-              <figure>
-                <img src="assets/img/awards/AHU_2.png" alt="ZZZ Competition 2022 - Winner">
-                <figcaption>ZZZ Competition 2022 · Winner</figcaption>
-              </figure>
-            </li>
-            <!-- 4 -->
-            <li class="carousel-slide">
-              <figure>
-                <img src="assets/img/awards/WHU_2.png" alt="ZZZ Competition 2022 - Winner">
-                <figcaption>ZZZ Competition 2022 · Winner</figcaption>
-              </figure>
-            </li>
-            <!-- 5 -->
-            <li class="carousel-slide">
-              <figure>
-                <img src="assets/img/awards/IGWG2023-excellent-XJG.png" alt="ZZZ Competition 2022 - Winner">
-                <figcaption>ZZZ Competition 2022 · Winner</figcaption>
-              </figure>
-            </li>
-            <!-- 6 -->
-            <li class="carousel-slide">
-              <figure>
-                <img src="assets/img/awards/WHU_1.png" alt="ZZZ Competition 2022 - Winner">
-                <figcaption>ZZZ Competition 2022 · Winner</figcaption>
-              </figure>
-            </li>
-          </ul>
-        </div>
-        <button class="carousel-btn next" aria-label="Next">›</button>
-        <div class="carousel-dots" aria-label="Slides"></div>
-      </div>
+      <!-- 只保留一个容器；data-src 指向 JSON -->
+      <div class="carousel" data-autoplay="5000" data-src="data/award.json?v=20250814v1"></div>
     </div>
   </section>
 
