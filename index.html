@@ -7,10 +7,10 @@
   <meta name="description" content="JianGong XU - Academic homepage" />
   <link rel="icon" href="assets/img/avatar.jpg" />
 
-  <!-- 只保留 Font Awesome；RG / Scholar 已用内联 SVG -->
+  <!-- 只保留 Font Awesome；RG / Scholar 用内联 SVG，统一单色风格 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
 
-  <!-- 你的样式与脚本（带版本号防缓存） -->
+  <!-- 样式与脚本（带版本号防缓存） -->
   <link rel="stylesheet" href="assets/style.css?v=20250815c" />
   <script defer src="assets/script.js?v=20250815c"></script>
 </head>
@@ -38,7 +38,7 @@
     </div>
   </header>
 
-  <!-- 左侧 TOC（脚本自动生成） -->
+  <!-- 左侧页内目录（脚本自动生成） -->
   <aside id="toc" class="toc"></aside>
 
   <!-- Hero -->
@@ -46,28 +46,44 @@
     <div class="container hero-grid">
       <div>
         <h1>JianGong XU <span class="muted">/ 徐建功</span></h1>
-        <p class="lead">Welcome to my academic homepage.</p>
-        <p>I am open to collaboration and welcome inquiries from anyone interested in my research.</p>
 
-        <!-- 社交链接 -->
+        <!-- 固定文案直接写入，避免被 i18n 清空 -->
+        <p class="lead">Welcome to my academic homepage.</p>
+        <p>
+          I am <b>JianGong XU</b>, a Ph.D. candidate at the
+          State Key Laboratory of Information Engineering in Surveying, Mapping and Remote Sensing (LIESMARS), Wuhan University.
+        </p>
+        <p>
+          Currently conducting research under the guidance of Professors <a href="http://rspip.whu.edu.cn/" target="_blank" rel="noopener">Jun PAN</a> and 
+          <a href="http://rsone.whu.edu.cn/" target="_blank" rel="noopener">Mi WANG</a>.
+        </p>
+        <p>
+          I am open to collaboration and welcome inquiries from anyone interested in my research.
+          Please feel free to <a href="#contact">contact</a>.
+        </p>
+
+        <!-- 社交链接（统一单色） -->
         <div class="chips">
           <a class="chip" href="mailto:dd_xjg@whu.edu.cn">
-            <i class="fa-solid fa-envelope icon" aria-hidden="true"></i><span>Email</span>
+            <i class="fa-solid fa-envelope icon" aria-hidden="true"></i>
+            <span>Email</span>
           </a>
           <a class="chip" href="https://github.com/JianGong-XU" target="_blank" rel="noopener">
-            <i class="fa-brands fa-github icon" aria-hidden="true"></i><span>GitHub</span>
+            <i class="fa-brands fa-github icon" aria-hidden="true"></i>
+            <span>GitHub</span>
           </a>
-          <!-- ResearchGate（SVG 单色） -->
+          <!-- ResearchGate（内联 SVG） -->
           <a class="chip" href="https://www.researchgate.net/profile/Xu-Jiangong-2?ev=hdr_xprf" target="_blank" rel="noopener">
             <svg class="icon" viewBox="0 0 512 512" aria-hidden="true" role="img">
               <path fill="currentColor" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0zm68.8 363.9c-15.8 0-30.8-5.6-42.5-15.8l-25.4-21.5c-1.6-1.3-3.5-2-5.6-2h-30.3v36.8c0 3.5-2.8 6.3-6.3 6.3h-39.1c-3.5 0-6.3-2.8-6.3-6.3V146.6c0-3.5 2.8-6.3 6.3-6.3h88.5c43.2 0 78.2 35 78.2 78.2 0 30.2-17.2 56.9-42.5 70.3l35.6 29.9c2.7 2.3 3.1 6.4.8 9.2l-23.3 28.3c-1.3 1.5-3.1 2.4-5 2.4zm-47.7-123c0-14.4-11.7-26.1-26.1-26.1h-34.6v52.1h34.6c14.4 0 26.1-11.7 26.1-26z"/>
             </svg>
             <span>ResearchGate</span>
           </a>
-          <!-- Google Scholar（SVG 单色） -->
+          <!-- Google Scholar（内联 SVG） -->
           <a class="chip" href="https://scholar.google.com/citations?user=riugH98AAAAJ&hl=zh-CN&oi=ao" target="_blank" rel="noopener">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" role="img">
-              <path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M6 12v4c0 2.2 2.7 4 6 4s6-1.8 6-4v-4l-6 3-6-3Z"/>
+              <path d="M12 3 2 8l10 5 10-5-10-5Z"/>
+              <path d="M6 12v4c0 2.2 2.7 4 6 4s6-1.8 6-4v-4l-6 3-6-3Z"/>
             </svg>
             <span>Google Scholar</span>
           </a>
@@ -84,7 +100,23 @@
   <section id="about" class="section">
     <div class="container">
       <h2 class="h2-ic">About</h2>
-      <p>I am a Ph.D. candidate at the State Key Laboratory of Information Engineering in Surveying, Mapping and Remote Sensing (LIESMARS), Wuhan University.</p>
+      <p>
+        Based on multi-modal, high spatio-temporal resolution remote sensing images, my research interests mainly include:
+      </p>
+      <ul>
+        <li>
+          Intelligent processing of remote sensing data:
+          Low-quality image restoration; Multimodal image registration.
+        </li>
+        <li>
+          Real-time remote sensing processing in orbit:
+          Semantic segmentation; Target/anomaly identification; Change detection.
+        </li>
+        <li>
+          Remote sensing monitoring of the environment:
+          Inversion of terrestrial ecological parameters; Large-scale ecological impact analysis.
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -100,6 +132,7 @@
   <section id="pubs" class="section">
     <div class="container">
       <h2 class="h2-ic">Publications</h2>
+      <!-- 论文列表：脚本从 data/pubs.json 注入 -->
       <div id="pubList" class="tp-list"></div>
       <p class="muted small">(* corresponding author)</p>
     </div>
@@ -148,6 +181,7 @@
     </div>
   </footer>
 
+  <!-- 返回顶部 -->
   <button id="backTop" class="backtop" aria-label="Back to top">↑</button>
 </body>
 </html>
