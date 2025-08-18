@@ -307,6 +307,64 @@ h3{ font-size: 20px; }
 @media (max-width: 640px) {
   .carousel-btn { display: none; } /* 手机端只用滑动/点点 */
 }
+/* ===== Award 证书图 统一缩放（不改比例） ===== */
+:root{
+  /* 根据需要调整这两个上限即可 */
+  --award-maxw: 860px;   /* 轮播最大宽度（桌面） */
+  --award-maxh: 520px;   /* 单张证书的最大显示高度（桌面） */
+}
+
+/* 中小屏微调上限，保证不占满整屏 */
+@media (max-width: 1024px){
+  :root{ --award-maxw: 680px; --award-maxh: 440px; }
+}
+@media (max-width: 640px){
+  :root{ --award-maxw: 100%; --award-maxh: 360px; }
+}
+
+/* 居中并限制整体宽度 */
+#award .carousel{
+  max-width: var(--award-maxw);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 居中对齐每张幻灯片内容 */
+#award .carousel-slide{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+/* figure 居中 */
+#award .carousel-slide figure{
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 证书图：保持比例，按最大宽/高“等比缩放”，大小不一也能统一视觉尺寸 */
+#award .carousel-slide img{
+  max-width: 100%;                /* 不超过容器宽 */
+  max-height: var(--award-maxh);  /* 不超过设定的高度上限 */
+  width: auto;
+  height: auto;
+  object-fit: contain;            /* 宽高比各不相同也不裁切 */
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: rgba(255,255,255,0.02);
+}
+
+/* 说明文字居中、低调一点 */
+#award .carousel-slide figcaption{
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--muted, #9aa4ad);
+  text-align: ce
 
 
 
