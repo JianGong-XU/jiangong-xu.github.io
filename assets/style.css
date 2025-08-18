@@ -388,8 +388,8 @@ h3{ font-size: 20px; }
 /* === Award：更协调的自适应尺寸（桌面 ~560×380，随屏缩放） === */
 #award{
   /* 上限与随视口缩放的下限/中值，视觉更协调 */
-  --award-maxw: clamp(360px, 56vw, 560px);
-  --award-maxh: clamp(240px, 42vw, 380px);
+  --award-maxw: clamp(180px, 28vw, 280px);
+  --award-maxh: clamp(120px, 21vw, 190px);
 }
 
 /* 容器宽度与居中 */
