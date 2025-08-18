@@ -221,6 +221,24 @@ h3{ font-size: 20px; }
   color: var(--muted);
 }
 
+/* Publications: 标题正下方的 Venue·Year 胶囊 */
+.pub-item .meta-top { margin: 4px 0 8px; }
+
+.pub-item .meta-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(88,166,255,.10);   /* 低饱和的蓝色底，可按需调整 */
+  font-weight: 600;
+  color: var(--fg);
+  line-height: 1.2;
+}
+.pub-item .meta-pill .sep{ opacity: .75; margin: 0 .25em; }
+
+
 /* small screens */
 @media (max-width: 720px){
   .pub-item{ grid-template-columns: 1fr; }
