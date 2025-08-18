@@ -111,11 +111,11 @@ h3{ font-size: 20px; }
 .icon {
   width: 18px;
   height: 18px;
-  font-size: 1.05em;       /* 兼容 font 图标 */
-  fill: currentColor;      /* SVG 图标生效 */
-  color: currentColor;     /* 字体图标生效 */
+  font-size: 1.05em;
+  fill: currentColor;
+  color: currentColor;
   line-height: 1;
-  flex-shrink: 0;          /* 保证图标不被压缩 */
+  flex-shrink: 0;
 }
 
 /* 覆盖品牌色，保持单色 */
@@ -231,13 +231,12 @@ h3{ font-size: 20px; }
   padding: 2px 10px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: rgba(88,166,255,.10);   /* 低饱和的蓝色底，可按需调整 */
+  background: rgba(88,166,255,.10);
   font-weight: 600;
   color: var(--fg);
   line-height: 1.2;
 }
 .pub-item .meta-pill .sep{ opacity: .75; margin: 0 .25em; }
-
 
 /* small screens */
 @media (max-width: 720px){
@@ -325,6 +324,7 @@ h3{ font-size: 20px; }
 @media (max-width: 640px) {
   .carousel-btn { display: none; } /* 手机端只用滑动/点点 */
 }
+
 /* ===== Award 证书图 统一缩放（不改比例） ===== */
 :root{
   /* 根据需要调整这两个上限即可 */
@@ -367,11 +367,11 @@ h3{ font-size: 20px; }
 
 /* 证书图：保持比例，按最大宽/高“等比缩放”，大小不一也能统一视觉尺寸 */
 #award .carousel-slide img{
-  max-width: 100%;                /* 不超过容器宽 */
-  max-height: var(--award-maxh);  /* 不超过设定的高度上限 */
+  max-width: 100%;
+  max-height: var(--award-maxh);
   width: auto;
   height: auto;
-  object-fit: contain;            /* 宽高比各不相同也不裁切 */
+  object-fit: contain;
   border-radius: 12px;
   box-shadow: var(--shadow);
   background: rgba(255,255,255,0.02);
@@ -382,8 +382,5 @@ h3{ font-size: 20px; }
   margin-top: 10px;
   font-size: 0.95rem;
   color: var(--muted, #9aa4ad);
-  text-align: ce
-
-
-
-
+  text-align: center;
+}
