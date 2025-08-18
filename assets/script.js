@@ -598,5 +598,94 @@ async function buildAwardCarouselsFromJSON() {
 // DOM Ready（defer 已启用，但这里再兜底一次）
 document.addEventListener('DOMContentLoaded', buildAwardCarouselsFromJSON);
 
+/* ========= Award: build from JSON, then init carousel ========= */
+function _buildEmptyCarouselDOM(wrap){
+  wrap.innerHTML = `
+    <button class="carousel-btn prev" aria-label="Previous">‹</button>
+    <div class="carousel-viewport"><ul class="carousel-track"></ul></div>
+    <button class="carousel-btn next" aria-label="Next">›</button>
+    <div class="carousel-dots" aria-label="Slides"></div>`;
+  return { track: wrap.querySelector('.carousel-track'), dots: wrap.querySelector('.carousel-dots') };
+}
+
+function _renderAwardSlides(trackEl, items){
+  const frag = document.createDocumentFragment();
+  items.forEach(it=>{
+    const li=document.createElement('li'); li.className='carousel-slide';
+    const fig=document.createElement('figure');
+    const img=document.createElement('img');
+    img.loading='lazy'; img.decoding='async';
+    img.src=it.src; img.alt=it.alt||it.caption||'award';
+    if(it.href){ const a=document.createElement('a'); a.href=it.href; a.target='_blank'; a.rel='noopener'; a.appendChild(img); fig.appendChild(a); }
+    else { fig.appendChild(img); }
+    if(it.caption){ const cap=document.createElement('figcaption'); cap.textContent=it.caption; fig.appendChild(cap); }
+    li.appendChild(fig); frag.appendChild(li);
+  });
+  trackEl.appendChild(frag);
+}
+
+function _initCarousel(wrap){
+  const track=wrap.querySelector('.carousel-track');
+  const slides=[...wrap.querySelectorAll('.carousel-slide')];
+  const prev=wrap.querySelector('.prev'), next=wrap.querySelector('.next');
+  const dotsWrap=wrap.querySelector('.carousel-dots');
+  const autoplayMs=parseInt(wrap.dataset.autoplay||'0',10);
+  if(!slides.length) return;
+
+  dotsWrap.innerHTML='';
+  slides.forEach((_,i)=>{ const b=document.createElement('button'); b.type='button';
+    b.setAttribute('aria-label',`Go to slide ${i+1}`); b.onclick=()=>go(i); dotsWrap.appendChild(b); });
+
+  let index=0,timer=null,isDragging=false,startX=0,currentX=0;
+  const update=()=>{ track.style.transform=`translateX(${-index*100}%)`;
+    dotsWrap.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-current',i===index?'true':'false')); };
+  const go=i=>{ index=(i+slides.length)%slides.length; update(); restart(); };
+  const nextSlide=()=>go(index+1), prevSlide=()=>go(index-1);
+
+  prev&&prev.addEventListener('click',prevSlide);
+  next&&next.addEventListener('click',nextSlide);
+
+  const restart=()=>{ if(!autoplayMs) return; clearInterval(timer); timer=setInterval(nextSlide,autoplayMs); };
+
+  function onDown(e){ isDragging=true; startX=(e.touches?e.touches[0].clientX:e.clientX);
+    currentX=startX; track.style.transition='none'; clearInterval(timer); }
+  function onMove(e){ if(!isDragging) return; const x=(e.touches?e.touches[0].clientX:e.clientX);
+    const dx=x-startX; currentX=x; track.style.transform=`translateX(${dx/wrap.clientWidth*100-index*100}%)`; }
+  function onUp(){ if(!isDragging) return; const dx=currentX-startX; track.style.transition='';
+    if(Math.abs(dx)>wrap.clientWidth*0.2){ dx<0?nextSlide():prevSlide(); } else { update(); restart(); }
+    isDragging=false; }
+
+  wrap.addEventListener('mousedown',onDown);
+  wrap.addEventListener('mousemove',onMove);
+  window.addEventListener('mouseup',onUp);
+  wrap.addEventListener('touchstart',onDown,{passive:true});
+  wrap.addEventListener('touchmove',onMove,{passive:true});
+  wrap.addEventListener('touchend',onUp);
+
+  wrap.addEventListener('keydown',(e)=>{ if(e.key==='ArrowLeft')prevSlide(); if(e.key==='ArrowRight')nextSlide(); });
+
+  update(); restart();
+}
+
+async function buildAwardCarouselsFromJSON(){
+  const wraps=document.querySelectorAll('.carousel[data-src]');
+  await Promise.all([...wraps].map(async (wrap)=>{
+    const url=wrap.getAttribute('data-src');
+    try{
+      const res=await fetch(url,{cache:'no-store'});
+      const json=await res.json();
+      const items=(json && (json.awards||json))||[];
+      const {track}=_buildEmptyCarouselDOM(wrap);
+      _renderAwardSlides(track,items);
+      _initCarousel(wrap);
+    }catch(e){
+      console.error('Failed to load awards JSON:',url,e);
+      wrap.innerHTML='<p class="muted small">No awards to display.</p>';
+    }
+  }));
+}
+document.addEventListener('DOMContentLoaded', buildAwardCarouselsFromJSON);
+
+
 
 
