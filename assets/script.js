@@ -185,50 +185,79 @@
     return out.join(' ');
   }
   async function loadPubs() {
-    const box = $('#pubList');
+    const box = document.querySelector('#pubList');
     if (!box) return;
-
+  
+    // 优先 data-src；否则 publications.json -> pubs.json
     const explicit = box.getAttribute('data-src');
     const data = explicit
       ? await fetchJSON(explicit)
       : await fetchJSONFirst(['data/publications.json', 'data/pubs.json']);
-
+  
     const items = ensureArray(data, 'pubs'); // 支持 数组 / {pubs:[...]}
     if (!items.length) { box.innerHTML = ''; return; }
-
-    box.innerHTML = items
-      .map((p) => {
-        const mainLink = p.link || p.url || (p.links && (p.links.doi || p.links.pdf || p.links.project)) || '';
-        const tags = p.tags || p.keywords || [];
-        const thumb = p.thumb ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication') + ' thumbnail'}"></div>` : '';
-        const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
-        const venue = p.venue || p.journal || '';
-        const year = p.year ? `<span class="sep">·</span>${p.year}` : '';
-        const meta = venue ? `<div class="meta">${venue}${year}</div>` : '';
-        const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
-        const title = mainLink
-          ? `<h3><a href="${mainLink}" target="_blank" rel="noopener">${p.title||''}</a></h3>`
-          : `<h3>${p.title||''}</h3>`;
-        const extraLinks = p.links ? `<div class="links">${linksToHTML(p.links)}</div>` : '';
-        const summary = p.introduction ? `<p class="small muted">${p.introduction}</p>` : '';
-        const tagsHTML = Array.isArray(tags) && tags.length
-          ? `<div class="kw">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
-
-        return `
-          <article class="pub-item">
-            ${thumb}
-            <div class="content">
-              ${badge}
-              ${title}
-              ${authors}
-              ${meta}
-              ${extraLinks}
-              ${summary}
-              ${tagsHTML}
-            </div>
-          </article>`;
-      })
-      .join('');
+  
+    function authorsToHTML(a) {
+      if (!a) return '';
+      if (Array.isArray(a)) return a.map(x => (x.bold ? `<b>${x.name||x}</b>` : x.name||x)).join(', ');
+      return String(a); // 字符串直接输出
+    }
+    function linksToHTML(links) {
+      if (!links) return '';
+      const out = [];
+      const map = {
+        pdf: 'PDF', arxiv: 'arXiv', doi: 'DOI', code: 'Code', data: 'Data',
+        project: 'Project', video: 'Video', slides: 'Slides', poster: 'Poster', bibtex: 'BibTeX'
+      };
+      Object.keys(map).forEach(k => { if (links[k]) out.push(`<a href="${links[k]}" target="_blank" rel="noopener">${map[k]}</a>`); });
+      return out.join(' ');
+    }
+  
+    box.innerHTML = items.map(p => {
+      const mainLink = p.link || p.url || (p.links && (p.links.doi || p.links.pdf || p.links.project)) || '';
+      const tags     = p.tags || p.keywords || [];
+  
+      const thumb = p.thumb
+        ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication') + ' thumbnail'}"></div>`
+        : '';
+  
+      const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
+  
+      // ★ Venue + Year：胶囊框展示，置于标题正下方
+      const venue = p.venue || p.journal || '';
+      const year  = p.year ? `<span class="sep">·</span>${p.year}` : '';
+      const metaTop = (venue || p.year)
+        ? `<div class="meta-top"><span class="meta-pill">${venue || ''}${year}</span></div>`
+        : '';
+  
+      const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
+  
+      const title = mainLink
+        ? `<h3><a href="${mainLink}" target="_blank" rel="noopener">${p.title||''}</a></h3>`
+        : `<h3>${p.title||''}</h3>`;
+  
+      const extraLinks = p.links ? `<div class="links">${linksToHTML(p.links)}</div>` : '';
+  
+      // ★ 顺序：先 keywords，再 introduction 摘要
+      const tagsHTML = Array.isArray(tags) && tags.length
+        ? `<div class="kw">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
+  
+      const summary = p.introduction ? `<p class="small muted">${p.introduction}</p>` : '';
+  
+      return `
+        <article class="pub-item">
+          ${thumb}
+          <div class="content">
+            ${badge}
+            ${title}
+            ${metaTop}     <!-- 胶囊 Venue·Year -->
+            ${authors}
+            ${extraLinks}
+            ${tagsHTML}    <!-- 关键词在上 -->
+            ${summary}     <!-- 摘要在下 -->
+          </div>
+        </article>`;
+    }).join('');
   }
 
   /* =====================================================
