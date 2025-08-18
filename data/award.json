@@ -1,34 +1,10 @@
 {
   "awards": [
-    {
-      "src": "assets/img/awards/2024PIERS-best.png",
-      "alt": "PIERS 2024 award certificate",
-      "caption": "PIERS 2024 · Best Paper"
-    },
-    {
-      "src": "assets/img/awards/AHU_1.png",
-      "alt": "AHU scholarship certificate",
-      "caption": "AHU · Scholarship"
-    },
-    {
-      "src": "assets/img/awards/AHU_2.png",
-      "alt": "AHU outstanding student certificate",
-      "caption": "AHU · Outstanding Student"
-    },
-    {
-      "src": "assets/img/awards/WHU_2.png",
-      "alt": "Wuhan University scholarship",
-      "caption": "Wuhan University · Scholarship"
-    },
-    {
-      "src": "assets/img/awards/IGWG2023-excellent-XJG.png",
-      "alt": "IGWG 2023 excellent award",
-      "caption": "IGWG 2023 · Excellent Award"
-    },
-    {
-      "src": "assets/img/awards/WHU_1.png",
-      "alt": "Wuhan University merit student",
-      "caption": "Wuhan University · Merit Student"
-    }
+    { "src": "assets/img/awards/2024PIERS-best.png", "alt": "PIERS 2024 award", "caption": "PIERS 2024 · Best Paper" },
+    { "src": "assets/img/awards/AHU_1.png", "alt": "AHU scholarship", "caption": "AHU · Scholarship" },
+    { "src": "assets/img/awards/AHU_2.png", "alt": "AHU outstanding student", "caption": "AHU · Outstanding Student" },
+    { "src": "assets/img/awards/WHU_2.png", "alt": "Wuhan University scholarship", "caption": "Wuhan University · Scholarship" },
+    { "src": "assets/img/awards/IGWG2023-excellent-XJG.png", "alt": "IGWG 2023 excellent award", "caption": "IGWG 2023 · Excellent Award" },
+    { "src": "assets/img/awards/WHU_1.png", "alt": "Wuhan University merit student", "caption": "Wuhan University · Merit Student" }
   ]
 }
