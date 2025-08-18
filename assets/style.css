@@ -65,20 +65,35 @@ h3{ font-size: 20px; }
   .hero-grid{ grid-template-columns:1fr; gap:20px; }
 }
 
-/* 头像卡片 */
+/* ===== 头像卡片（更小更协调） ===== */
+:root{
+  /* 桌面端头像宽度（原 320px ➜ 240px，可按需 220~260 调） */
+  --avatar-w-desktop: 240px;
+  /* 移动端上限：更保守一点，避免太大 */
+  --avatar-w-mobile: min(62vw, 300px);
+}
+
 .avatar{
   justify-self: end;
   background: var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 10px;                 /* 原 12px，略收紧 */
   box-shadow: var(--shadow);
 }
-.avatar img{ width:320px; height:auto; border-radius:14px; object-fit:cover; }
-@media (max-width: 600px){
-  .avatar{ justify-self:center; }
-  .avatar img{ width: min(70vw, 360px); }
+
+.avatar img{
+  width: var(--avatar-w-desktop);/* 原 320px */
+  height: auto;
+  border-radius: 12px;           /* 原 14px，跟容器更协调 */
+  object-fit: cover;
 }
+
+@media (max-width: 860px){
+  .avatar{ justify-self: center; }
+  .avatar img{ width: var(--avatar-w-mobile); } /* 原 min(70vw, 360px) */
+}
+
 
 /* 社交按钮 chips */
 .chips {
