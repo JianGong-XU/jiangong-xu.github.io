@@ -36,7 +36,7 @@
   },
   {
     "title": "HDRSA-Net: Hybrid dynamic residual self-attention network for SAR-assisted optical image cloud and shadow removal",
-    "authors": "Jun Pan, Jiangong Xu, Xiaoyu Yu, Guo Ye, Mi Wang*, Yumin Chen, Jianshen Ma",
+    "authors": "Jun Pan*, Jiangong Xu, Xiaoyu Yu, Guo Ye, Mi Wang*, Yumin Chen, Jianshen Ma",
     "venue": "ISPRS Journal of Photogrammetry and Remote Sensing",
     "year": 2024,
     "url": "https://www.sciencedirect.com/science/article/abs/pii/S0924271624004039",
