@@ -384,42 +384,49 @@ h3{ font-size: 20px; }
   color: var(--muted, #9aa4ad);
   text-align: center;
 }
-/* === Award 缩到当前尺寸的 1/12 === */
+
+/* === Award：更协调的自适应尺寸（桌面 ~560×380，随屏缩放） === */
 #award{
-  /* 原来 :root 里桌面的上限是 860 × 520；这里整体缩到 1/12 */
-  --award-maxw: calc(860px / 6);
-  --award-maxh: calc(520px / 6);
+  /* 上限与随视口缩放的下限/中值，视觉更协调 */
+  --award-maxw: clamp(360px, 56vw, 560px);
+  --award-maxh: clamp(240px, 42vw, 380px);
 }
 
-/* 容器宽度按新的上限走（规则已存在，这里只是确保优先级） */
+/* 容器宽度与居中 */
 #award .carousel{
   max-width: var(--award-maxw);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* 图片高度按 1/12 上限约束（保持等比、不裁切） */
+/* 适当收紧内边距，避免显得“占地” */
+#award .carousel-viewport{ padding: 6px 0; }
+#award .carousel-slide{ padding: 10px 12px; }
+
+/* 证书图：保持等比缩放、不过度占高 */
 #award .carousel-slide img{
-  max-height: var(--award-maxh);
   max-width: 100%;
+  max-height: var(--award-maxh);
   width: auto;
   height: auto;
   object-fit: contain;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
 }
 
-/* 小尺寸下，按钮和圆点也一起“迷你化”，避免遮挡 */
+/* 控件也做“迷你化”，不喧宾夺主 */
 #award .carousel-btn{
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
 }
-#award .carousel-btn.prev{ left: 4px; }
-#award .carousel-btn.next{ right: 4px; }
-#award .carousel-dots button{
-  width: 6px;
-  height: 6px;
-}
+#award .carousel-btn.prev{ left: 6px; }
+#award .carousel-btn.next{ right: 6px; }
+#award .carousel-dots{ bottom: 8px; }
+#award .carousel-dots button{ width: 6px; height: 6px; }
 
-/* 说明文字也相应缩小一点点 */
+/* 说明文字略微收小 */
 #award .carousel-slide figcaption{
-  font-size: 0.8rem;
+  font-size: .85rem;
 }
-
