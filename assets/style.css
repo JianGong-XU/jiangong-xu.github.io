@@ -384,3 +384,42 @@ h3{ font-size: 20px; }
   color: var(--muted, #9aa4ad);
   text-align: center;
 }
+/* === Award 缩到当前尺寸的 1/12 === */
+#award{
+  /* 原来 :root 里桌面的上限是 860 × 520；这里整体缩到 1/12 */
+  --award-maxw: calc(860px / 12);
+  --award-maxh: calc(520px / 12);
+}
+
+/* 容器宽度按新的上限走（规则已存在，这里只是确保优先级） */
+#award .carousel{
+  max-width: var(--award-maxw);
+}
+
+/* 图片高度按 1/12 上限约束（保持等比、不裁切） */
+#award .carousel-slide img{
+  max-height: var(--award-maxh);
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 小尺寸下，按钮和圆点也一起“迷你化”，避免遮挡 */
+#award .carousel-btn{
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+}
+#award .carousel-btn.prev{ left: 4px; }
+#award .carousel-btn.next{ right: 4px; }
+#award .carousel-dots button{
+  width: 6px;
+  height: 6px;
+}
+
+/* 说明文字也相应缩小一点点 */
+#award .carousel-slide figcaption{
+  font-size: 0.8rem;
+}
+
