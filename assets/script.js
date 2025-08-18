@@ -161,16 +161,11 @@
       .join('');
   }
 
-  /* =====================================================
-   *  PUBLICATIONS -> #pubList
-   *  兼容：默认读 data/publications.json（回退 data/pubs.json）
-   *       url 作为主链接；keywords 作为 tags；authors 支持字符串或数组；支持 introduction 摘要
-   *       ★ Venue·Year 胶囊，置于标题正下方；keywords 在 introduction 上方
-   * ===================================================== */
+  /* ========= Reusable helpers for pubs & datasets ========= */
   function authorsToHTML(a) {
     if (!a) return '';
     if (Array.isArray(a)) return a.map(x => (x.bold ? `<b>${x.name||x}</b>` : x.name||x)).join(', ');
-    return String(a); // 字符串直接输出
+    return String(a);
   }
   function linksToHTML(links) {
     if (!links) return '';
@@ -179,23 +174,26 @@
       pdf: 'PDF', arxiv: 'arXiv', doi: 'DOI', code: 'Code', data: 'Data',
       project: 'Project', video: 'Video', slides: 'Slides', poster: 'Poster', bibtex: 'BibTeX'
     };
-    Object.keys(map).forEach(k => {
-      const v = links[k];
-      if (v) out.push(`<a href="${v}" target="_blank" rel="noopener">${map[k]}</a>`);
-    });
+    Object.keys(map).forEach(k => { if (links[k]) out.push(`<a href="${links[k]}" target="_blank" rel="noopener">${map[k]}</a>`); });
     return out.join(' ');
   }
+
+  /* =====================================================
+   *  PUBLICATIONS -> #pubList
+   *  - 读取 data/publications.json（回退 data/pubs.json）
+   *  - Venue·Year 胶囊放在标题上方（第一行）
+   *  - keywords 在 introduction 上方
+   * ===================================================== */
   async function loadPubs() {
     const box = document.querySelector('#pubList');
     if (!box) return;
 
-    // 优先 data-src；否则 publications.json -> pubs.json
     const explicit = box.getAttribute('data-src');
     const data = explicit
       ? await fetchJSON(explicit)
       : await fetchJSONFirst(['data/publications.json', 'data/pubs.json']);
 
-    const items = ensureArray(data, 'pubs'); // 支持 数组 / {pubs:[...]}
+    const items = ensureArray(data, 'pubs');
     if (!items.length) { box.innerHTML = ''; return; }
 
     box.innerHTML = items.map(p => {
@@ -203,30 +201,28 @@
       const tags     = p.tags || p.keywords || [];
 
       const thumb = p.thumb
-        ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication') + ' thumbnail'}"></div>`
+        ? `<div class="thumb"><img src="${p.thumb}" alt="${(p.title||'publication')} thumbnail"></div>`
         : '';
 
       const badge = p.badge ? `<span class="badge">${p.badge}</span>` : '';
 
-      // ★ Venue + Year：胶囊框展示，置于标题正下方
+      // 胶囊：Venue · Year（放在标题之上）
       const venue = p.venue || p.journal || '';
-      const year  = p.year ? `<span class="sep">·</span>${p.year}</span>` : '</span>';
+      const yearPart = p.year ? `<span class="sep">·</span>${p.year}` : '';
       const metaTop = (venue || p.year)
-        ? `<div class="meta-top"><span class="meta-pill">${venue || ''}${year}</div>`
+        ? `<div class="meta-top"><span class="meta-pill">${venue || ''}${yearPart}</span></div>`
         : '';
-
-      const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
 
       const title = mainLink
         ? `<h3><a href="${mainLink}" target="_blank" rel="noopener">${p.title||''}</a></h3>`
         : `<h3>${p.title||''}</h3>`;
 
+      const authors = p.authors ? `<p class="authors">${authorsToHTML(p.authors)}</p>` : '';
       const extraLinks = p.links ? `<div class="links">${linksToHTML(p.links)}</div>` : '';
 
-      // ★ 顺序：先 keywords，再 introduction 摘要
+      // 顺序：keywords 在上，introduction 在下
       const tagsHTML = Array.isArray(tags) && tags.length
         ? `<div class="kw">${tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : '';
-
       const summary = p.introduction ? `<p class="small muted">${p.introduction}</p>` : '';
 
       return `
@@ -234,12 +230,12 @@
           ${thumb}
           <div class="content">
             ${badge}
-            ${title}
-            ${metaTop}     <!-- 胶囊 Venue·Year -->
+            ${metaTop}    <!-- 第一行：胶囊 -->
+            ${title}      <!-- 第二行：标题 -->
             ${authors}
             ${extraLinks}
-            ${tagsHTML}    <!-- 关键词在上 -->
-            ${summary}     <!-- 摘要在下 -->
+            ${tagsHTML}
+            ${summary}
           </div>
         </article>`;
     }).join('');
@@ -257,7 +253,6 @@
     const arr = ensureArray(data, 'service');
     if (!arr.length) { list.innerHTML = ''; return; }
 
-    // 支持两种：纯字符串项；或分组 {year, items[]}
     const html = arr.map(it => {
       if (typeof it === 'string') return `<li>${it}</li>`;
       if (it && Array.isArray(it.items)) {
@@ -272,8 +267,8 @@
 
   /* =====================================================
    *  DATASET -> #datasetGrid
-   *  兼容：默认读 data/datasets.json（回退 data/dataset.json）
-   *       name→title；paper/gdrive/baidu/href/link 作为主链接；显示 venue/year/desc；附带多链接
+   *  - 读取 data/datasets.json（回退 data/dataset.json）
+   *  - name→title；paper/gdrive/baidu/href/link 作为主链接；显示 venue/year/desc；附带多链接
    * ===================================================== */
   async function loadDataset() {
     const grid = $('#datasetGrid');
@@ -284,7 +279,7 @@
       ? await fetchJSON(explicit)
       : await fetchJSONFirst(['data/datasets.json', 'data/dataset.json']);
 
-    const items = ensureArray(data, 'datasets'); // 支持 数组 / {datasets:[...]}
+    const items = ensureArray(data, 'datasets');
     if (!items.length) { grid.innerHTML = ''; return; }
 
     function datasetLinksHTML(d) {
@@ -315,10 +310,7 @@
 
   /* =====================================================
    *  AWARD CAROUSEL (JSON-DRIVEN)
-   *  HTML placeholder:
-   *  <div class="carousel" data-autoplay="5000" data-src="data/award.json"></div>
    * ===================================================== */
-
   function buildCarouselShell(wrap) {
     wrap.innerHTML = `
       <button class="carousel-btn prev" aria-label="Previous">‹</button>
