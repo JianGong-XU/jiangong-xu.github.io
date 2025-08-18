@@ -387,8 +387,8 @@ h3{ font-size: 20px; }
 /* === Award 缩到当前尺寸的 1/12 === */
 #award{
   /* 原来 :root 里桌面的上限是 860 × 520；这里整体缩到 1/12 */
-  --award-maxw: calc(860px / 12);
-  --award-maxh: calc(520px / 12);
+  --award-maxw: calc(860px / 6);
+  --award-maxh: calc(520px / 6);
 }
 
 /* 容器宽度按新的上限走（规则已存在，这里只是确保优先级） */
