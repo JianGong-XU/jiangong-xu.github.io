@@ -177,11 +177,28 @@
     const items = ensureArray(data, 'pubs');
     if (!items.length) { box.innerHTML = ''; return; }
 
+    // 高亮作者：Jiangong Xu -> <b><u>...</u></b>
+    const SELF_RE = /\bJiangong\s+Xu\b/gi;
+    const emphasizeSelf = (str) => String(str).replace(SELF_RE, (m) => `<b><u>${m}</u></b>`);
+
     function authorsToHTML(a) {
       if (!a) return '';
-      if (Array.isArray(a)) return a.map(x => (x.bold ? `<b>${x.name||x}</b>` : x.name||x)).join(', ');
-      return String(a);
+      // 数组：字符串或对象
+      if (Array.isArray(a)) {
+        return a.map(x => {
+          if (typeof x === 'string') return emphasizeSelf(x);
+          if (x && typeof x === 'object') {
+            // 兼容 {name, bold} 结构
+            const name = emphasizeSelf(x.name || '');
+            return x.bold ? `<b><u>${name}</u></b>` : name;
+          }
+          return emphasizeSelf(String(x));
+        }).join(', ');
+      }
+      // 字符串
+      return emphasizeSelf(a);
     }
+
     function linksToHTML(links) {
       if (!links) return '';
       const out = [];
@@ -295,10 +312,7 @@
   }
 
   /* =====================================================
-   *  AWARD CAROUSEL
-   *  - #award 区域内自动启用“横排 strip”模式：
-   *      · 所有图片统一高 240px（宽自适应）
-   *      · 视口横向滚动（按钮=滚动 80% 视口宽）
+   *  AWARD CAROUSEL  (#award = strip 横排模式)
    * ===================================================== */
 
   function buildCarouselShell(wrap) {
@@ -357,7 +371,6 @@
       track: $('.carousel-track', wrap)
     };
 
-    // 在 #award 内默认启用 strip 横排模式；若 data-view 指定，也以 data-view 为准
     const mode = wrap.dataset.view || (wrap.closest('#award') ? 'row' : 'single');
 
     const track = $('.carousel-track', wrap);
@@ -369,22 +382,17 @@
 
     if (!slides.length) return;
 
-    // --------- strip 横排模式 ---------
     if (mode === 'row') {
-      // 横排模式下：使用原生滚动，不做 translateX；隐藏圆点
       dotsWrap.style.display = 'none';
-
-      // 左右按钮 => 横向滚动
       const scrollBy = (dir) => {
         const dx = viewport.clientWidth * 0.8 * dir;
         viewport.scrollBy({ left: dx, behavior: 'smooth' });
       };
       prev.addEventListener('click', () => scrollBy(-1));
       next.addEventListener('click', () => scrollBy(1));
-      return; // 不进入单页轮播逻辑
+      return;
     }
 
-    // --------- 单页轮播（默认）---------
     dotsWrap.innerHTML = '';
     slides.forEach((_, i) => {
       const b = document.createElement('button');
