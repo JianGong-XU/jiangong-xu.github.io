@@ -75,7 +75,7 @@ h3{ font-size: 20px; }
   box-shadow: var(--shadow);
 }
 .avatar img{ width:320px; height:auto; border-radius:14px; object-fit:cover; }
-@media (max-width: 860px){
+@media (max-width: 600px){
   .avatar{ justify-self:center; }
   .avatar img{ width: min(70vw, 360px); }
 }
