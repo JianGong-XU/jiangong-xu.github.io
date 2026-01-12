@@ -1,5 +1,7 @@
 {
   "awards": [
+    { "src": "assets/img/awards/2025NRSB.png", "alt": "2025NRSB award", "caption": "NRSB2025: Graduate Academic Salon" },
+    { "src": "assets/img/awards/2025CJIG.png", "alt": "2025CJIG award", "caption": "CJIG2025: Excellent Academic Salon" },
     { "src": "assets/img/awards/2024PIERS-best.png", "alt": "PIERS 2024 award", "caption": "PIERS2024: Best Paper" },
     { "src": "assets/img/awards/AHU_1.png", "alt": "AHU scholarship", "caption": "AHU: Exce. Grad." },
     { "src": "assets/img/awards/AHU_2.png", "alt": "AHU outstanding student", "caption": "AHU: Outs. Stu." },
